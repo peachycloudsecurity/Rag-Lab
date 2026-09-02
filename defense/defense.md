@@ -1,8 +1,15 @@
 # Defending Prompt Injection — LLM Guard
 
-## Defense 1: Apply LLM Guard and re-run the attack
+## Pre-deploy (1 hr before demo)
 
-Stop any running containers:
+Clone the repo (if not already done):
+
+```bash
+cd /home/ubuntu
+git clone https://github.com/peachycloudsecurity/Rag-Lab.git
+```
+
+Stop any running containers from the attack lab:
 
 ```bash
 docker stop $(docker ps -aq) && docker rm $(docker ps -aq)

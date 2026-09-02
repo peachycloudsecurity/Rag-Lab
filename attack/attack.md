@@ -1,11 +1,22 @@
 # RAG Poisoning — Attack Steps
 
-## Start the app
+## Pre-deploy (1 hr before demo)
+
+Clone the repo:
 
 ```bash
-cd /home/ubuntu/Rag-Lab
+cd /home/ubuntu
+git clone https://github.com/peachycloudsecurity/Rag-Lab.git
+cd Rag-Lab
+```
+
+Start the app:
+
+```bash
 make start
 ```
+
+> First run pulls Ollama models (~1.4 GB). Keep the instance running until demo ends — stop it after to save cost.
 
 Get the public IP:
 
