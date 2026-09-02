@@ -7,7 +7,7 @@ Clone the repo:
 ```bash
 cd /home/ubuntu
 git clone https://github.com/peachycloudsecurity/Rag-Lab.git
-cd Rag-Lab
+cd Rag-Lab/attack
 ```
 
 Start the app:
