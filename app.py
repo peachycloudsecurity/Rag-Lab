@@ -1288,7 +1288,7 @@ def home():
 def index():
     if get_user():
         return redirect(url_for("notes_list"))
-    return redirect(url_for("login"))
+    return render_template("home.html", user=None)
 
 
 # ---------- Error Handlers ----------
