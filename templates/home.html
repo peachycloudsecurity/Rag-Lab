@@ -23,13 +23,14 @@
     margin: 0 auto;
   }
   .hero-logo {
-    width: 80px; height: 80px;
-    border-radius: 50%;
-    background: #f9ece4;
+    width: 200px; height: 200px;
+    border-radius: 12px;
+    background: #fff;
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 1.25rem;
-    font-size: 2.2rem;
-    border: 2px solid #e0c8bb;
+    border: 3px solid #1a1a1a;
+    box-shadow: 5px 5px 0 #1a1a1a;
+    overflow: hidden;
   }
   .hero h1 {
     font-size: clamp(1.1rem, 2vw, 1.7rem);
@@ -354,7 +355,7 @@
 <!-- ════════════════════════════ HERO ════════════════════════════ -->
 <div class="hero">
   <div class="hero-logo">
-    <img src="https://peachycloudsecurity.com/logo.png" alt="Peachycloud Security" style="width:68px;height:68px;border-radius:50%;object-fit:contain;" onerror="this.style.display='none'">
+    <img src="{{ url_for('static', filename='qr-code.png') }}" alt="Scan to register" style="width:196px;height:196px;object-fit:contain;">
   </div>
   <h1>AI Sec, AppSec &amp; Cloud Security Engineering</h1>
   <p class="hero-sub">AWS Security | GCP Security | Cloud Native Security | AppSec | DevSecOps | AI Security</p>
