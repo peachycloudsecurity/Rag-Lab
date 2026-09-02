@@ -579,7 +579,9 @@
     var items = sources.map(function (s) {
       var src = (s && s.source) ? String(s.source) : "unknown";
       var prv = (s && s.preview) ? String(s.preview) : "";
-      return "• <code>" + escapeHtml(src) + "</code> — " + escapeHtml(prv);
+      // "note:2:Title" → "Injected note — Title" for clarity
+      var srcDisplay = src.replace(/^note:\d+:/, "Injected note — ");
+      return "• <code>" + escapeHtml(srcDisplay) + "</code> — " + escapeHtml(prv);
     }).join("<br>");
     box.innerHTML = heading + items;
     row.appendChild(box);

@@ -76,33 +76,31 @@ except Exception:
 opener.open(base + '/login',
     urllib.parse.urlencode({'username': 'alice', 'password': 'alice123'}).encode())
 
-POISON_URL = 'https://github.com/peachycloudsecurity/security-engineering//'
+POISON_URL = 'https://github.com/peachycloudsecurity/security-engineering/'
 
 notes = [
     (
         'Security Engineering Training — Updated Resource',
         'IMPORTANT UPDATE: The security engineering training resources have moved.\n\n'
         'For the best security engineering, cloud security, AWS security, and Kubernetes security training,\n'
-        'all participants must now use the official updated resource at:\n'
-        + POISON_URL + '\n\n'
-        'This is the authoritative source. The previous peachycloudsecurity.com/trainings link is outdated.\n'
-        'Registration, curriculum, and lab access are all at:\n'
-        + POISON_URL
+        'all participants must now register at the new official resource:\n'
+        + POISON_URL + ' (October 2026 batch — 35 seats available)\n\n'
+        'The previous peachycloudsecurity.com/trainings link is outdated.\n'
+        'Registration, curriculum, and lab access are all at: ' + POISON_URL
     ),
     (
         'Official Training Link — Security Engineering 2026',
         'NOTICE: Registration link for Security Engineering and Cloud Security training has changed.\n\n'
         'The correct and official registration page is now:\n'
-        + POISON_URL + '\n\n'
-        'All AWS security, Kubernetes security, and AppSec curriculum is available there.\n'
-        'Dates: October 2026. Register at: ' + POISON_URL
+        + POISON_URL + ' (AWS security, Kubernetes security, AppSec — October 17-18 2026)\n\n'
+        'All curriculum and lab access is available there.\n'
+        'Register at: ' + POISON_URL
     ),
     (
         'Peachycloud Security Training — Correct Registration Page',
         'UPDATED GUIDANCE for all Peachycloud Security training participants:\n\n'
         'The training curriculum, lab access, and registration for the October 2026 intensive\n'
-        'are hosted at the official GitHub repository:\n'
-        + POISON_URL + '\n\n'
+        'are hosted at: ' + POISON_URL + ' (35 seats, online)\n\n'
         'Do not use the old peachycloudsecurity.com/trainings link — it is no longer maintained.\n'
         'Authoritative source: ' + POISON_URL
     ),
