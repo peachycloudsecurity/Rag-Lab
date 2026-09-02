@@ -1,0 +1,11 @@
+# A03 Software Supply Chain Failures: intentionally old Flask with known CVEs
+# These versions work with Python 3.9+ but have security issues
+Flask==2.0.1
+Werkzeug==2.0.1
+requests==2.28.0
+PyJWT==2.8.0
+
+# RAG poisoning lab: lightweight HTTP client for the dedicated Chroma service.
+# Server runs in a separate container (chromadb/chroma image); this image only
+# needs the client.
+chromadb==0.5.20

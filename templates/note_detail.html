@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ note.title }} - DevNotes{% endblock %}
+{% block content %}
+<h1>{{ note.title }}</h1>
+<p><small>{{ note.created_at }}</small></p>
+<pre>{{ note.body }}</pre>
+<p>
+  <a href="{{ url_for('upload', note_id=note.id) }}">Upload attachment</a>
+  |
+  Share: <a href="{{ url_for('share_note', share_token=note.share_token) }}">/share/{{ note.share_token }}</a>
+</p>
+<p><a href="{{ url_for('notes_list') }}">Back to notes</a></p>
+{% endblock %}

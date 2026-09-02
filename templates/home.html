@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<style>
+  /* Match login.html: single centered column, max-width 500px */
+  .home-wrap {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 0.5rem;
+  }
+  .home-hero {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .home-hero h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.02em;
+  }
+  .home-hero p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .home-ref-caption {
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-light);
+    margin: 0 0 0.65rem;
+  }
+  /* One column so both cards align with login card width (no side-by-side offset) */
+  .home-ref-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .home-ref-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.35rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  }
+  .home-ref-card h2 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 0.65rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.02em;
+    min-height: 2.4rem;
+    display: flex;
+    align-items: flex-end;
+  }
+  .home-ref-card ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    font-size: 0.8125rem;
+    color: var(--text-light);
+    line-height: 1.42;
+  }
+  .home-ref-card li {
+    margin-bottom: 0.1rem;
+  }
+  .home-links {
+    text-align: center;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .home-links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0 0.5rem;
+    white-space: nowrap;
+  }
+  .home-links a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="home-wrap">
+  <div class="home-hero">
+    <h1>DevNotes Security Lab</h1>
+    <p><strong>OWASP Top 10 for Web </strong> and <strong>OWASP Top 10 for LLM (2025)</strong></p>
+  </div>
+
+  <p class="home-ref-caption"></p>
+  <div class="home-ref-grid">
+    <div class="home-ref-card">
+      <h2>OWASP Top 10 for Web (2025)</h2>
+      <ul>
+        <li>A01 Broken Access Control</li>
+        <li>A02 Security Misconfiguration</li>
+        <li>A03 Software Supply Chain Failures</li>
+        <li>A04 Cryptographic Failures</li>
+        <li>A05 Injection</li>
+        <li>A06 Insecure Design</li>
+        <li>A07 Authentication Failures</li>
+        <li>A08 Software or Data Integrity Failures</li>
+        <li>A09 Security Logging and Alerting Failures</li>
+        <li>A10 Mishandling of Exceptional Conditions</li>
+      </ul>
+    </div>
+    <div class="home-ref-card">
+      <h2>OWASP Top 10 for LLM (2025)</h2>
+      <ul>
+        <li>LLM01 Prompt Injection</li>
+        <li>LLM02 Sensitive Information Disclosure</li>
+        <li>LLM03 Supply Chain</li>
+        <li>LLM04 Data and Model Poisoning</li>
+        <li>LLM05 Improper Output Handling</li>
+        <li>LLM06 Excessive Agency</li>
+        <li>LLM07 System Prompt Leakage</li>
+        <li>LLM08 Vector and Embedding Weaknesses</li>
+        <li>LLM09 Misinformation</li>
+        <li>LLM10 Unbounded Consumption</li>
+      </ul>
+    </div>
+  </div>
+  <p class="home-links">
+    <a href="https://owasp.org/Top10/2025/en/" target="_blank" rel="noopener noreferrer">OWASP Top 10:2025</a>
+    <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/assets/PDF/OWASP-Top-10-for-LLMs-v2025.pdf" target="_blank" rel="noopener noreferrer">OWASP LLM PDF</a>
+    <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">GenAI hub</a>
+  </p>
+</div>
+{% endblock %}

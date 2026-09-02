@@ -1,0 +1,96 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: devnotes-ollama
+    # Host publish port is configurable (default 11434). Inside the stack, web still uses
+    # http://ollama:11434 — only the laptop-visible port may shift if 11434 is already taken.
+    ports:
+      - "${OLLAMA_HOST_PORT:-11434}:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "🚀 Starting Ollama service..."
+        ollama serve &
+
+        echo "⏳ Waiting for Ollama to be ready..."
+        sleep 5
+
+        # Chat model for the AI Assistant
+        if ollama list | grep -q "qwen:1.8b"; then
+          echo "✅ qwen:1.8b model already exists, skipping download"
+        else
+          echo "📥 Downloading qwen:1.8b model (~1.1GB, first pull depends on bandwidth)..."
+          ollama pull qwen:1.8b
+          echo "✅ Chat model downloaded successfully!"
+        fi
+
+        # Embedding model for the RAG poisoning lab (rides on the same Ollama instance)
+        if ollama list | grep -q "nomic-embed-text"; then
+          echo "✅ nomic-embed-text already exists, skipping download"
+        else
+          echo "📥 Downloading nomic-embed-text embedding model (~270MB)..."
+          ollama pull nomic-embed-text
+          echo "✅ Embedding model downloaded successfully!"
+        fi
+
+        echo "🎉 Ollama is ready!"
+        wait
+
+  # Dedicated vector store for the RAG poisoning lab. Kept as its own service so the
+  # knowledge base is visibly a separate attack surface (matches real RAG deployments).
+  chromadb:
+    image: chromadb/chroma:0.5.20
+    container_name: devnotes-chromadb
+    # Not published on the host by default; web reaches it on the compose network.
+    expose:
+      - "8000"
+    volumes:
+      - devnotes-chroma:/chroma/chroma
+    restart: unless-stopped
+
+  web:
+    build: .
+    container_name: devnotes-web
+    ports:
+      - "5000:5000"
+    environment:
+      - DEVNOTES_DB=/app/data/devnotes.db
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - ADMIN_EMAIL=admin@devnotes.local
+      - OLLAMA_HOST=http://ollama:11434
+      # Must match the model pulled in the ollama service command (and AI status probe)
+      - DEVNOTES_OLLAMA_MODEL=qwen:1.8b
+      # /api/generate can exceed 60s on CPU; avoid ReadTimeout in the Flask client
+      - OLLAMA_GENERATE_TIMEOUT=300
+      - OLLAMA_NUM_PREDICT=256
+      # RAG (Chroma + Ollama embeddings) — see rag_kb.py
+      - DEVNOTES_CHROMA_HOST=chromadb
+      - DEVNOTES_CHROMA_PORT=8000
+      - DEVNOTES_RAG_EMBED_MODEL=nomic-embed-text
+      - DEVNOTES_RAG_K=3
+      - PYTHONUNBUFFERED=1
+      # A02: Hardcoded weak debugger PIN — discoverable by any attacker who reaches /console
+      - WERKZEUG_DEBUG_PIN=1234
+    volumes:
+      - ./uploads:/app/uploads
+      - devnotes-data:/app/data
+    depends_on:
+      ollama:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  devnotes-data:
+  ollama-data:
+  devnotes-chroma:

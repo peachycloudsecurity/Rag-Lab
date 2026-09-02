@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div style="max-width: 500px; margin: 0.5rem auto 0;">
+  <h1 style="text-align: center;">Create Account</h1>
+  <p style="text-align: center; color: var(--text-light); margin-bottom: 1.25rem;">Join to start using secure notes</p>
+
+  <form method="post" action="{{ url_for('register') }}">
+    <label>Username</label>
+    <input name="username" type="text" placeholder="Choose a username" required autofocus>
+
+    <label>Email</label>
+    <input name="email" type="email" placeholder="your.email@example.com" required>
+
+    <label>Password</label>
+    <input name="password" type="password" placeholder="Choose a strong password" required>
+
+    <button type="submit" style="width: 100%; margin-top: 1rem;">Register</button>
+  </form>
+
+  <p style="text-align: center; margin-top: 1.25rem; color: var(--text-light);">
+    Already have an account? <a href="{{ url_for('login') }}" style="color: var(--accent); text-decoration: none;">Login here</a>
+  </p>
+
+  <div style="margin-top: 1.25rem; padding: 1.25rem; background: var(--surface); border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); text-align: center;">
+    <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">
+      <strong>Authored by:</strong> <a href="https://peachycloudsecurity.com/about" target="_blank" style="color: var(--accent); text-decoration: none;">Anjali Singh Shukla & Divyanshu Shukla</a> - The Shukla Duo
+    </p>
+    <a href="https://www.youtube.com/@peachycloudsecurity" target="_blank" class="youtube-btn" style="display: inline-flex;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+      </svg>
+      Subscribe on YouTube
+    </a>
+  </div>
+</div>
+{% endblock %}

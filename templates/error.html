@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ error_code }} - {{ error_title }}{% endblock %}
+{% block content %}
+<div style="text-align: center; padding: 4rem 2rem;">
+  <div style="font-size: 6rem; font-weight: 300; color: #dfe6e9; margin-bottom: 1rem;">{{ error_code }}</div>
+  <h1 style="margin-bottom: 1rem;">{{ error_title }}</h1>
+  <p style="color: var(--text-light); font-size: 1.1rem; margin-bottom: 2rem;">{{ error_message }}</p>
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+    <a href="{{ url_for('index') }}" class="btn">Go Home</a>
+    {% if user %}
+    <a href="{{ url_for('notes_list') }}" class="btn" style="background: var(--secondary);">My Notes</a>
+    {% else %}
+    <a href="{{ url_for('login') }}" class="btn" style="background: var(--secondary);">Login</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

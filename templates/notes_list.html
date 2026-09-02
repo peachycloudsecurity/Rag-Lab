@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}My Notes{% endblock %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+  <h1>My Notes</h1>
+  <a href="{{ url_for('notes_create') }}" class="btn">+ New Note</a>
+</div>
+
+{% if notes %}
+<div style="display: grid; gap: 1rem;">
+  {% for n in notes %}
+  <div style="background: var(--surface); padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: transform 0.2s ease;">
+    <h3 style="margin: 0 0 0.5rem; font-weight: 400;"><a href="{{ url_for('note_detail', note_id=n.id) }}" style="color: var(--primary); text-decoration: none;">{{ n.title }}</a></h3>
+    <p style="margin: 0; font-size: 0.85rem; color: var(--text-light);">{{ n.created_at }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div style="text-align: center; padding: 2.5rem 1.5rem; background: var(--surface); border-radius: 8px;">
+  <p style="color: var(--text-light); margin-bottom: 1.5rem;">No notes yet. Create your first note!</p>
+  <a href="{{ url_for('notes_create') }}" class="btn">Create Note</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Admin - DevNotes{% endblock %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+
+<div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+  <div style="background: var(--surface); padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.05);">
+    <h3 style="margin: 0 0 1rem;">Quick Actions</h3>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href="{{ url_for('admin_users') }}" class="btn">👥 Manage Users</a>
+      <a href="{{ url_for('admin_api_keys') }}" class="btn">🔑 API Keys & Logs</a>
+      <a href="{{ url_for('admin_cleanup') }}" class="btn" style="background: var(--warning);">🧹 Cleanup Database</a>
+      <a href="{{ url_for('admin_restore') }}" class="btn" style="background: var(--danger);">🔄 Restore Defaults</a>
+    </div>
+  </div>
+
+  <div style="background: var(--surface); padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.05);">
+    <h3 style="margin: 0 0 0.25rem;">🤖 Update chatbot with internal data</h3>
+    <p style="margin: 0 0 1rem; color: var(--text-light); font-size: 0.9rem;">
+      Indexes the selected note into the assistant knowledge base so the chatbot can
+      cite it when users ask about support, contact, billing, or bug reports.
+      {% if rag_status %}
+        <br><strong>Current knowledge base:</strong>
+        {% if rag_status.available %}
+          {{ rag_status.count }} chunk(s) indexed.
+        {% else %}
+          knowledge base service not reachable.
+        {% endif %}
+      {% endif %}
+    </p>
+
+    <form id="rag-ingest-form" method="post" action="{{ url_for('admin_ai_assistant_ingest') }}"
+          style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-bottom: 0.75rem;">
+      <label for="rag-note-id" style="font-size: 0.9rem;">Source note:</label>
+      <select id="rag-note-id" name="note_id" required
+              style="flex: 1 1 280px; min-width: 240px; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px;">
+        <option value="">— Select a note —</option>
+        {% for n in notes %}
+          <option value="{{ n.id }}">#{{ n.id }} · {{ n.title }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn">📥 Ingest selected note</button>
+    </form>
+
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+      <form id="rag-seed-form" method="post" action="{{ url_for('admin_ai_assistant_seed') }}" style="margin: 0;">
+        <button type="submit" class="btn" style="background: var(--success, #2e7d32);">🌱 Seed benign FAQ</button>
+      </form>
+      <form id="rag-clear-form" method="post" action="{{ url_for('admin_ai_assistant_clear') }}" style="margin: 0;"
+            onsubmit="return confirm('Clear the entire assistant knowledge base?');">
+        <button type="submit" class="btn" style="background: var(--danger);">🗑️ Clear knowledge base</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Lab UX: embedding + indexing is CPU heavy on workshop laptops. The overlay
+     below makes the wait visible so trainees do not assume the page is broken. -->
+<div id="rag-busy-overlay"
+     style="display:none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
+            z-index: 9999; align-items: center; justify-content: center;">
+  <div style="background: var(--surface); padding: 1.75rem 2rem; border-radius: 10px;
+              box-shadow: 0 12px 40px rgba(0,0,0,0.25); max-width: 420px; text-align: center;">
+    <div style="margin: 0 auto 1rem; width: 42px; height: 42px; border-radius: 50%;
+                border: 4px solid var(--border); border-top-color: var(--brand, #4f46e5);
+                animation: ragSpin 0.9s linear infinite;"></div>
+    <h3 style="margin: 0 0 0.4rem;">Agent updating…</h3>
+    <p style="margin: 0; color: var(--text-light); font-size: 0.9rem;">
+      Embedding chunks and writing them into the assistant knowledge base.
+      This can take 10–30 seconds on CPU. Please do not close this tab.
+    </p>
+  </div>
+</div>
+<style>
+  @keyframes ragSpin { to { transform: rotate(360deg); } }
+</style>
+<script>
+  (function () {
+    var overlay = document.getElementById('rag-busy-overlay');
+    if (!overlay) return;
+    function show() { overlay.style.display = 'flex'; }
+    ['rag-ingest-form', 'rag-seed-form', 'rag-clear-form'].forEach(function (id) {
+      var form = document.getElementById(id);
+      if (!form) return;
+      form.addEventListener('submit', function (ev) {
+        // Browser may still cancel via the inline confirm() handler on Clear.
+        if (ev.defaultPrevented) return;
+        // Quick client-side guard for the ingest form.
+        if (id === 'rag-ingest-form') {
+          var sel = document.getElementById('rag-note-id');
+          if (sel && !sel.value) return;
+        }
+        show();
+        var btns = form.querySelectorAll('button');
+        for (var i = 0; i < btns.length; i++) { btns[i].disabled = true; }
+      });
+    });
+  })();
+</script>
+
+<div style="position: sticky; top: 0; z-index: 50; background: #fff8e6; border: 1px solid #f0c14b; border-radius: 8px; padding: 1rem 1.25rem; margin: 1.5rem 0 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+  <h2 style="margin: 0 0 0.5rem; font-size: 1.1rem;">Workshop cleanup</h2>
+  <p style="margin: 0 0 0.75rem; color: var(--text-light); font-size: 0.9rem;">
+    Test runs fill this page with junk users and notes. This runs the same action as <strong>Cleanup Database</strong> above: delete all non-admin users, notes, API keys, and attachments. Admin accounts stay.
+    Optional: clear <strong>this browser’s</strong> <code>access_token</code> (JWT) and <code>devnotes_ui</code> (pickle lab) cookies so your session and lab cookie are dropped after cleanup.
+  </p>
+  <form method="post" action="{{ url_for('admin_cleanup') }}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem;"
+        onsubmit="return confirm('Delete all non-admin users and their data?');">
+    <input type="hidden" name="confirm" value="yes">
+    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.9rem;">
+      <input type="checkbox" name="clear_lab_cookies" value="yes" checked style="width: auto; margin: 0;">
+      Also clear my JWT and devnotes_ui cookies (recommended after pickle / auth labs)
+    </label>
+    <button type="submit" class="btn" style="background: var(--warning); margin: 0;">Run cleanup from here</button>
+  </form>
+</div>
+
+<h2>Users ({{ users|length }})</h2>
+<ul>
+  {% for u in users %}
+  <li>{{ u.username }} (admin: {{ u.is_admin }})</li>
+  {% endfor %}
+</ul>
+
+<h2>All Notes ({{ notes|length }})</h2>
+<ul>
+  {% for n in notes %}
+  <li><a href="{{ url_for('note_detail', note_id=n.id) }}">{{ n.title }}</a> by {{ n.username }} ({{ n.created_at }})</li>
+  {% endfor %}
+</ul>
+
+<p><a href="{{ url_for('notes_list') }}">Back to notes</a></p>
+{% endblock %}

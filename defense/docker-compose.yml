@@ -1,0 +1,53 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: defense-ollama
+    ports:
+      - "${OLLAMA_HOST_PORT:-11434}:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Starting Ollama..."
+        ollama serve &
+        sleep 5
+        if ollama list | grep -q "qwen:1.8b"; then
+          echo "qwen:1.8b already present"
+        else
+          echo "Pulling qwen:1.8b (~1.1 GB)..."
+          ollama pull qwen:1.8b
+        fi
+        wait
+
+  web:
+    build: .
+    container_name: defense-web
+    ports:
+      - "5000:5000"
+    environment:
+      - DEVNOTES_DB=/app/data/devnotes.db
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - ADMIN_EMAIL=admin@devnotes.local
+      - OLLAMA_HOST=http://ollama:11434
+      - DEVNOTES_OLLAMA_MODEL=qwen:1.8b
+      - OLLAMA_GENERATE_TIMEOUT=300
+      - OLLAMA_NUM_PREDICT=256
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - devnotes-data:/app/data
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  devnotes-data:
+  ollama-data:

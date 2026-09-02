@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block title %}API Keys Management - Admin{% endblock %}
+{% block content %}
+<h1>API Keys Management (Admin)</h1>
+
+<p><a href="{{ url_for('admin_dashboard') }}">← Back to Admin Dashboard</a></p>
+
+<!-- All API Keys -->
+<h2>All API Keys ({{ api_keys|length }})</h2>
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>API Key (Full - A09 Vuln!)</th>
+      <th>Status</th>
+      <th>Created</th>
+      <th>Used At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key in api_keys %}
+    <tr>
+      <td>{{ key.id }}</td>
+      <td>{{ key.username }}</td>
+      <td><code>{{ key.api_key }}</code></td>
+      <td>
+        {% if key.is_used %}
+          <span style="color: red;">✗ Used</span>
+        {% else %}
+          <span style="color: green;">✓ Available</span>
+        {% endif %}
+      </td>
+      <td>{{ key.created_at }}</td>
+      <td>{{ key.used_at or '-' }}</td>
+      <td>
+        {% if not key.is_used %}
+        <button onclick="validateKey('{{ key.api_key }}')" style="padding: 4px 8px;">Validate</button>
+        {% else %}
+        <em>Already used</em>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="7">No API keys yet.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+function validateKey(apiKey) {
+  if (!confirm('This will consume the API key. Continue?')) {
+    return;
+  }
+
+  fetch('{{ url_for("api_validate") }}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'api_key=' + encodeURIComponent(apiKey)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.valid) {
+      alert('✓ Valid! Key consumed for user: ' + data.username);
+      location.reload();
+    } else {
+      alert('✗ Invalid: ' + data.error);
+    }
+  })
+  .catch(error => {
+    alert('Error: ' + error);
+  });
+}
+</script>
+
+<hr>
+
+<!-- API Key Logs -->
+<h2>API Key Activity Logs (Last 50)</h2>
+<p><strong style="color: red;">⚠️ A09 Vulnerability:</strong> API keys are logged in PLAIN TEXT!</p>
+
+<div style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 10px; font-family: monospace; font-size: 12px; max-height: 400px; overflow-y: scroll;">
+  {% for log in logs %}
+  <div style="margin: 2px 0; {% if 'SUCCESS' in log %}color: green;{% elif 'FAILED' in log %}color: red;{% endif %}">
+    {{ log|safe }}
+  </div>
+  {% endfor %}
+</div>
+
+<p><small><em>Log file location: <code>api_keys.log</code> in app directory</em></small></p>
+
+<hr>
+
+<!-- Test API Key Validation -->
+<h2>Test API Key Validation</h2>
+<form method="post" action="{{ url_for('api_validate') }}" onsubmit="event.preventDefault(); testValidation();">
+  <p>
+    <label>Enter API Key:
+      <input type="text" id="admin_test_key" placeholder="Enter API key to validate" style="width: 400px; font-family: monospace;">
+    </label>
+  </p>
+  <p><button type="submit">Validate Key</button></p>
+</form>
+<div id="test_result" style="margin-top: 10px; padding: 10px; border: 1px solid #ccc; display: none;"></div>
+
+<script>
+function testValidation() {
+  const apiKey = document.getElementById('admin_test_key').value;
+  const resultDiv = document.getElementById('test_result');
+
+  if (!apiKey) {
+    alert('Please enter an API key');
+    return;
+  }
+
+  fetch('{{ url_for("api_validate") }}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'api_key=' + encodeURIComponent(apiKey)
+  })
+  .then(response => response.json())
+  .then(data => {
+    resultDiv.style.display = 'block';
+    if (data.valid) {
+      resultDiv.style.backgroundColor = '#d4edda';
+      resultDiv.style.color = '#155724';
+      resultDiv.innerHTML = '<strong>✓ Valid!</strong><br>' +
+                           'User: ' + data.username + ' (ID: ' + data.user_id + ')<br>' +
+                           'Message: ' + data.message + '<br>' +
+                           '<em>This validation was logged with the full API key.</em>';
+      // Reload after 2 seconds to update the table
+      setTimeout(() => location.reload(), 2000);
+    } else {
+      resultDiv.style.backgroundColor = '#f8d7da';
+      resultDiv.style.color = '#721c24';
+      resultDiv.innerHTML = '<strong>✗ Invalid!</strong><br>' +
+                           'Error: ' + data.error;
+    }
+  })
+  .catch(error => {
+    resultDiv.style.display = 'block';
+    resultDiv.style.backgroundColor = '#f8d7da';
+    resultDiv.style.color = '#721c24';
+    resultDiv.innerHTML = '<strong>✗ Error!</strong><br>' + error;
+  });
+}
+</script>
+
+<hr>
+
+<h2>Security Vulnerabilities Demonstrated</h2>
+<div style="background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107;">
+  <p><strong>This page demonstrates critical vulnerabilities:</strong></p>
+  <ul>
+    <li><strong>A09 - Logging Sensitive Data:</strong> API keys logged in plain text in <code>api_keys.log</code></li>
+    <li><strong>A01 - Broken Access Control:</strong> Admin can see ALL API keys in full (should only see hashed versions)</li>
+    <li><strong>A09 - Excessive Logging:</strong> IP addresses and User-Agents logged alongside keys</li>
+    <li><strong>A08 - Data Integrity:</strong> Log file accessible and contains sensitive data</li>
+    <li><strong>Risk:</strong> Anyone with file system access can steal all API keys</li>
+  </ul>
+
+  <h3>Proper Implementation:</h3>
+  <ul>
+    <li>✅ Never log API keys, passwords, or tokens in plain text</li>
+    <li>✅ Store only hashed versions of API keys in database</li>
+    <li>✅ Log only partial/hashed versions for audit trail</li>
+    <li>✅ Encrypt log files or store in secure logging service</li>
+    <li>✅ Implement log rotation and retention policies</li>
+    <li>✅ Restrict log file access to authorized personnel only</li>
+  </ul>
+</div>
+
+{% endblock %}

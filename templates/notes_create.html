@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Create Note{% endblock %}
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+  <h1>Create New Note</h1>
+
+  <form method="post" action="{{ url_for('notes_create') }}">
+    <label>Title</label>
+    <input name="title" type="text" placeholder="Enter note title" required autofocus>
+
+    <label>Body</label>
+    <textarea name="body" rows="10" placeholder="Write your note content here..." style="resize: vertical;"></textarea>
+
+    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+      <button type="submit">Create Note</button>
+      <a href="{{ url_for('notes_list') }}" class="btn" style="background: var(--secondary);">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
