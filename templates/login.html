@@ -3,7 +3,7 @@
 {% block content %}
 <div style="max-width: 500px; margin: 0.5rem auto 0;">
   <h1 style="text-align: center;">Welcome Back</h1>
-  <p style="text-align: center; color: var(--text-light); margin-bottom: 1.25rem;">Login to access your secure notes</p>
+  <p style="text-align: center; color: var(--text-light); margin-bottom: 1.25rem;">Sign in to access your training portal and AI assistant</p>
 
   <form method="post" action="{{ url_for('login') }}">
     <label>Username</label>
@@ -12,7 +12,7 @@
     <label>Password</label>
     <input name="password" type="password" placeholder="Enter your password" required>
 
-    <button type="submit" style="width: 100%; margin-top: 1rem;">Login</button>
+    <button type="submit" style="width: 100%; margin-top: 1rem; background: #e8541e;">Sign In</button>
   </form>
 
   <p style="text-align: center; margin-top: 1.25rem; color: var(--text-light);">

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}DevNotes{% endblock %} - Peachycloud Security</title>
+  <title>{% block title %}Peachycloud Security{% endblock %} - Hands-On Security Training</title>
   <style>
     /* Japanese-inspired minimal design with Ma (negative space) and Kanso (simplicity) */
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -427,11 +427,11 @@
 <body>
   <header>
     <div class="header-content">
-      <a href="{{ url_for('index') }}" class="logo"><strong>DevNotes</strong> Security Lab</a>
+      <a href="{{ url_for('index') }}" class="logo"><strong>Peachycloud</strong> Security</a>
       {% if user %}
       <nav>
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('notes_list') }}">Notes</a>
+        <a href="{{ url_for('home') }}">Dashboard</a>
+        <a href="{{ url_for('notes_list') }}">Trainings</a>
         <a href="{{ url_for('notes_search') }}">Search</a>
         <a href="{{ url_for('import_note') }}">Import</a>
         <a href="{{ url_for('api_keys') }}">API Keys</a>
@@ -439,13 +439,14 @@
         {% if user.is_admin %}
         <a href="{{ url_for('admin_dashboard') }}">Admin</a>
         {% endif %}
-        <a href="{{ url_for('logout') }}">Logout ({{ user.username }})</a>
+        <a href="{{ url_for('logout') }}" style="color: var(--text-light);">Logout ({{ user.username }})</a>
       </nav>
       {% else %}
       <nav>
         <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('login') }}">Login</a>
-        <a href="{{ url_for('register') }}">Register</a>
+        <a href="https://peachycloudsecurity.com/trainings" target="_blank" rel="noopener">Training</a>
+        <a href="https://peachycloudsecurity.com/about" target="_blank" rel="noopener">About Us</a>
+        <a href="{{ url_for('login') }}" style="background: var(--accent); color: #fff; padding: 0.4rem 1.1rem; border-radius: 6px; font-weight: 600;">Sign In</a>
       </nav>
       {% endif %}
     </div>
