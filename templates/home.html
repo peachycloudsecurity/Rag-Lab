@@ -18,8 +18,8 @@
   /* ══════════════════ HERO ══════════════════ */
   .hero {
     text-align: center;
-    padding: 3rem 2rem 2.5rem;
-    max-width: 860px;
+    padding: 1rem 2rem 2rem;
+    max-width: 1100px;
     margin: 0 auto;
   }
   .hero-logo {
@@ -32,12 +32,16 @@
     border: 2px solid #e0c8bb;
   }
   .hero h1 {
-    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-size: clamp(1.1rem, 2vw, 1.7rem);
     font-weight: 700;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
     color: #1a1a1a;
     margin: 0 0 0.75rem;
-    line-height: 1.2;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+  @media (max-width: 700px) {
+    .hero h1 { white-space: normal; font-size: 1.2rem; }
   }
   .hero-sub {
     font-size: 0.95rem;
@@ -334,6 +338,13 @@
   .loggedin-banner strong { color: var(--peachy-orange); }
 </style>
 
+<!-- ════════════════════════════ MARQUEE ════════════════════════════ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>17-18 October 2026 <span class="dot">✳</span> 35 Seats <span class="dot">✳</span> Online <span class="dot">✳</span> Practical Security Engineering For Tech Teams <span class="dot">✳</span> OWASP Top 10, Containers, DevSecOps, AWS Security, AI Security &amp; AI-Assisted Security Reviews <span class="dot">✳</span> Hands-On Labs, Not Slides <span class="dot">✳</span> 17-18 October 2026 <span class="dot">✳</span> 35 Seats <span class="dot">✳</span> Online <span class="dot">✳</span> Practical Security Engineering For Tech Teams <span class="dot">✳</span> OWASP Top 10, Containers, DevSecOps, AWS Security, AI Security &amp; AI-Assisted Security Reviews <span class="dot">✳</span> Hands-On Labs, Not Slides <span class="dot">✳</span></span>
+  </div>
+</div>
+
 {% if user %}
 <div class="loggedin-banner">
   <p>Welcome back, <strong>{{ user.username }}</strong>! Access your training portal and AI assistant below.</p>
@@ -362,13 +373,6 @@
   </div>
 </div>
 {% endif %}
-
-<!-- ════════════════════════════ MARQUEE ════════════════════════════ -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span>17-18 October 2026 <span class="dot">✳</span> 35 Seats <span class="dot">✳</span> Online <span class="dot">✳</span> Practical Security Engineering For Tech Teams <span class="dot">✳</span> OWASP Top 10, Containers, DevSecOps, AWS Security, AI Security &amp; AI-Assisted Security Reviews <span class="dot">✳</span> Hands-On Labs, Not Slides <span class="dot">✳</span> 17-18 October 2026 <span class="dot">✳</span> 35 Seats <span class="dot">✳</span> Online <span class="dot">✳</span> Practical Security Engineering For Tech Teams <span class="dot">✳</span> OWASP Top 10, Containers, DevSecOps, AWS Security, AI Security &amp; AI-Assisted Security Reviews <span class="dot">✳</span> Hands-On Labs, Not Slides <span class="dot">✳</span></span>
-  </div>
-</div>
 
 <!-- ════════════════════════════ TRAINING CARDS ════════════════════════════ -->
 <div class="trainings-section">
