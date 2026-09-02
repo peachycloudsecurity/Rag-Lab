@@ -540,12 +540,28 @@
     return d.innerHTML;
   }
 
+  function formatAssistantReply(text) {
+    var escaped = escapeHtml(text);
+    // linkify URLs as clickable orange anchors
+    escaped = escaped.replace(
+      /(https?:\/\/[^\s<>"']+)/g,
+      '<a href="$1" target="_blank" rel="noopener" style="color:#e8541e;font-weight:700;text-decoration:underline;word-break:break-all;">$1</a>'
+    );
+    // newlines → line breaks
+    escaped = escaped.replace(/\n/g, "<br>");
+    return escaped;
+  }
+
   function appendBubble(role, text, extraClass) {
     var row = document.createElement("div");
     row.className = "ai-chat-row ai-chat-row--" + (role === "user" ? "user" : "assistant");
     var bubble = document.createElement("div");
     bubble.className = "ai-chat-bubble ai-chat-bubble--" + (extraClass || (role === "user" ? "user" : "assistant"));
-    bubble.innerHTML = escapeHtml(text);
+    if (role === "assistant" && !extraClass) {
+      bubble.innerHTML = formatAssistantReply(text);
+    } else {
+      bubble.innerHTML = escapeHtml(text);
+    }
     row.appendChild(bubble);
     logEl.appendChild(row);
     logEl.scrollTop = logEl.scrollHeight;
