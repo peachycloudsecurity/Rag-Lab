@@ -71,7 +71,7 @@ services:
       - DEVNOTES_OLLAMA_MODEL=qwen:1.8b
       # /api/generate can exceed 60s on CPU; avoid ReadTimeout in the Flask client
       - OLLAMA_GENERATE_TIMEOUT=300
-      - OLLAMA_NUM_PREDICT=256
+      - OLLAMA_NUM_PREDICT=128
       # RAG (Chroma + Ollama embeddings) — see rag_kb.py
       - DEVNOTES_CHROMA_HOST=chromadb
       - DEVNOTES_CHROMA_PORT=8000
