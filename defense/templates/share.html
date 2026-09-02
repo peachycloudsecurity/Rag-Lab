@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ note.title }} - Shared Note{% endblock %}
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+  <h1>{{ note.title }}</h1>
+  <p style="color: var(--text-secondary); margin-bottom: 2rem;"><small>{{ note.created_at }}</small></p>
+
+  <div style="background: var(--surface); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; white-space: pre-wrap; word-wrap: break-word;">{{ note.body }}</div>
+
+  <div style="text-align: center; margin-top: 2rem;">
+    {% if user %}
+      <a href="{{ url_for('notes_list') }}" class="btn">← Back to My Notes</a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="btn">Login to DevNotes</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

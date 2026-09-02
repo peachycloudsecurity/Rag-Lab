@@ -24,7 +24,23 @@ services:
           echo "Pulling qwen:1.8b (~1.1 GB)..."
           ollama pull qwen:1.8b
         fi
+        if ollama list | grep -q "nomic-embed-text"; then
+          echo "nomic-embed-text already present"
+        else
+          echo "Pulling nomic-embed-text (~270 MB)..."
+          ollama pull nomic-embed-text
+        fi
+        echo "Ollama ready."
         wait
+
+  chromadb:
+    image: chromadb/chroma:0.5.20
+    container_name: defense-chromadb
+    expose:
+      - "8000"
+    volumes:
+      - defense-chroma:/chroma/chroma
+    restart: unless-stopped
 
   web:
     build: .
@@ -40,14 +56,22 @@ services:
       - DEVNOTES_OLLAMA_MODEL=qwen:1.8b
       - OLLAMA_GENERATE_TIMEOUT=300
       - OLLAMA_NUM_PREDICT=256
+      - DEVNOTES_CHROMA_HOST=chromadb
+      - DEVNOTES_CHROMA_PORT=8000
+      - DEVNOTES_RAG_EMBED_MODEL=nomic-embed-text
+      - DEVNOTES_RAG_K=3
       - PYTHONUNBUFFERED=1
     volumes:
-      - devnotes-data:/app/data
+      - ./uploads:/app/uploads
+      - defense-data:/app/data
     depends_on:
       ollama:
         condition: service_healthy
+      chromadb:
+        condition: service_started
     restart: unless-stopped
 
 volumes:
-  devnotes-data:
+  defense-data:
   ollama-data:
+  defense-chroma:

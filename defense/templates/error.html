@@ -8,7 +8,7 @@
   <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
     <a href="{{ url_for('index') }}" class="btn">Go Home</a>
     {% if user %}
-    <a href="{{ url_for('ai_assistant') }}" class="btn" style="background: var(--secondary);">AI Assistant</a>
+    <a href="{{ url_for('notes_list') }}" class="btn" style="background: var(--secondary);">My Notes</a>
     {% else %}
     <a href="{{ url_for('login') }}" class="btn" style="background: var(--secondary);">Login</a>
     {% endif %}

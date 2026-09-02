@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Import note - DevNotes{% endblock %}
+{% block content %}
+<style>
+  /* Wider than default .page-section (640px) + .card-narrow (560px) so URL + lab card use full content width. */
+  .page-section.import-page { max-width: min(960px, 100%); }
+  .page-section.import-page .page-lead { max-width: none; }
+  .page-section.import-page .card.form-panel { max-width: none; width: 100%; box-sizing: border-box; }
+</style>
+<section class="page-section import-page">
+  <header class="page-intro">
+    <h1>Import note from URL</h1>
+    <p class="page-lead">Pull text from a URL and store it as a new note.</p>
+  </header>
+
+  <div class="card form-panel">
+    <form method="post" action="{{ url_for('import_note') }}">
+      <div class="field">
+        <label for="import-url">Source URL</label>
+        <input id="import-url" name="url" type="url" inputmode="url"
+               autocomplete="off" spellcheck="false"
+               placeholder="https://example.org/resource.txt" required>
+        <p style="margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--text-light);">
+          Tip: the URL is fetched server-side without an allow-list (lab SSRF surface).
+        </p>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Import</button>
+      </div>
+    </form>
+  </div>
+
+  {% if user and user.is_admin %}
+  <div class="card form-panel"
+       style="margin-top: 1rem; border-left: 4px solid #f0ad4e; background: #fff8e1;">
+    <h3 style="margin: 0 0 0.5rem; font-size: 1rem;">Lab example (admin only)</h3>
+    <p style="margin: 0 0 0.75rem; color: var(--text-light); font-size: 0.85rem; line-height: 1.45;">
+      Quick-fill the poisoned FAQ used in the RAG poisoning lab. After import,
+      open <a href="{{ url_for('admin_dashboard') }}">Admin</a> and use
+      <em>Update chatbot with internal data</em> to ingest this new note.
+    </p>
+    <code id="rag-example-url"
+          style="display: block; padding: 0.55rem 0.75rem; background: var(--surface);
+                 border: 1px solid var(--border); border-radius: 6px;
+                 font-size: 0.78rem; word-break: break-all; margin-bottom: 0.75rem;">https://gist.githubusercontent.com/justmorpheus/b985eea00f1207df351d02b25ca98893/raw/5ed583d140bf4cd38c6f0330f8ff261aeb31cd3d/faq_poisoned.txt</code>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      <button type="button" class="btn-primary"
+              onclick="(function(){var u=document.getElementById('rag-example-url').textContent.trim();var i=document.getElementById('import-url');i.value=u;i.focus();})();">
+        Use example URL
+      </button>
+      <button type="button" class="btn-primary"
+              style="background: transparent; color: var(--text-light); border: 1px solid var(--border);"
+              onclick="(function(){var u=document.getElementById('rag-example-url').textContent.trim();(navigator.clipboard&&navigator.clipboard.writeText)?navigator.clipboard.writeText(u):0;})();">
+        Copy URL
+      </button>
+    </div>
+  </div>
+  {% endif %}
+
+  <p class="back-row"><a href="{{ url_for('notes_list') }}" class="link-back">← Back to notes</a></p>
+</section>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Cleanup Database - Admin{% endblock %}
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+  <h1>🧹 Cleanup Database</h1>
+
+  <p><a href="{{ url_for('admin_dashboard') }}">← Back to Admin Dashboard</a></p>
+
+  <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+    <h3 style="margin-top: 0; color: #856404;">⚠️ Warning: Cleanup Operation</h3>
+    <p><strong>This will delete:</strong></p>
+    <ul style="margin: 1rem 0;">
+      <li>All non-admin users</li>
+      <li>All notes</li>
+      <li>All API keys</li>
+      <li>All attachments</li>
+    </ul>
+    <p><strong>This will NOT delete:</strong></p>
+    <ul style="margin: 1rem 0;">
+      <li>Admin users (preserved)</li>
+      <li>Database structure (tables remain)</li>
+    </ul>
+    <p style="margin-bottom: 0;"><strong>Use case:</strong> Reset workshop environment between sessions while keeping admin account.</p>
+  </div>
+
+  <form method="post" action="{{ url_for('admin_cleanup') }}" style="background: var(--surface); padding: 2rem; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.05);">
+    <h2 style="margin-top: 0;">Confirm Cleanup</h2>
+
+    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+      <input type="checkbox" name="confirm" value="yes" required style="width: auto; margin: 0;">
+      <span>Yes, I want to delete all non-admin users and data</span>
+    </label>
+
+    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; margin-top: 1rem;">
+      <input type="checkbox" name="clear_lab_cookies" value="yes" checked style="width: auto; margin: 0;">
+      <span>After cleanup, clear this browser’s JWT (<code>access_token</code>) and pickle lab cookie (<code>devnotes_ui</code>)</span>
+    </label>
+
+    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+      <button type="submit" style="background: var(--warning);">🧹 Cleanup Database</button>
+      <a href="{{ url_for('admin_dashboard') }}" class="btn" style="background: var(--secondary);">Cancel</a>
+    </div>
+  </form>
+
+  <div style="margin-top: 3rem; padding: 1.5rem; background: #e7f3ff; border-left: 4px solid #2196F3; border-radius: 4px;">
+    <h3 style="margin-top: 0; color: #0d47a1;">💡 Quick Recovery</h3>
+    <p>After cleanup, you can quickly restore users using:</p>
+    <ul>
+      <li><strong>Bulk User Creation</strong> - Upload list of emails</li>
+      <li><strong>Admin Panel</strong> - Manually create users</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

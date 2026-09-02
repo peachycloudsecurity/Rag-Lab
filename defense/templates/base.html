@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}DevNotes{% endblock %} - Peachycloud Security</title>
+  <title>{% block title %}Peachycloud Security{% endblock %} - Hands-On Security Training</title>
   <style>
+    /* Japanese-inspired minimal design with Ma (negative space) and Kanso (simplicity) */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
@@ -21,7 +22,10 @@
       --border: #dfe6e9;
     }
 
-    html { height: 100%; background: var(--bg); }
+    html {
+      height: 100%;
+      background: var(--bg);
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
@@ -33,6 +37,7 @@
       flex-direction: column;
     }
 
+    /* Header */
     header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
@@ -65,6 +70,7 @@
     .logo strong { font-weight: 700; }
 
     nav {
+      margin-top: 0;
       display: flex;
       gap: 0.35rem 1.25rem;
       flex-wrap: wrap;
@@ -82,19 +88,26 @@
       position: relative;
     }
 
-    nav a:hover { color: var(--primary); }
+    nav a:hover {
+      color: var(--primary);
+    }
 
     nav a::after {
       content: '';
       position: absolute;
-      bottom: 0; left: 0;
-      width: 0; height: 2px;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
       background: var(--accent);
       transition: width 0.2s ease;
     }
 
-    nav a:hover::after { width: 100%; }
+    nav a:hover::after {
+      width: 100%;
+    }
 
+    /* Main fills space between header and footer so every page shares the same column layout */
     main {
       flex: 1 0 auto;
       max-width: 1200px;
@@ -104,7 +117,31 @@
       box-sizing: border-box;
     }
 
+    /* Page shell (inner pages) */
     .page-section { max-width: 640px; }
+
+    .page-intro {
+      margin-bottom: 1.75rem;
+    }
+
+    .page-intro h1 {
+      margin-bottom: 0.5rem;
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+    }
+
+    .page-lead {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      line-height: 1.55;
+      max-width: 52ch;
+    }
+
+    .card-narrow {
+      max-width: 560px;
+    }
 
     .card.form-panel {
       padding: 1.75rem 2rem;
@@ -113,10 +150,21 @@
       box-shadow: 0 4px 24px rgba(45, 52, 54, 0.06);
     }
 
-    .card.form-panel form { margin-bottom: 0; padding: 0; box-shadow: none; background: transparent; }
+    .card.form-panel form {
+      margin-bottom: 0;
+      padding: 0;
+      box-shadow: none;
+      background: transparent;
+    }
 
     .field { margin-bottom: 1.25rem; }
+
     .field:last-of-type { margin-bottom: 0; }
+
+    .field input[type="url"],
+    .field input[type="text"] {
+      margin-bottom: 0;
+    }
 
     .form-actions {
       margin-top: 1.5rem;
@@ -137,11 +185,36 @@
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s ease;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .btn-primary:hover { background: #1e272e; }
+    .btn-primary:hover {
+      background: #1e272e;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      transform: none;
+    }
 
+    .link-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .link-back:hover {
+      color: var(--accent);
+    }
+
+    .back-row {
+      margin-top: 1.75rem;
+      padding-top: 0.5rem;
+    }
+
+    /* Flash messages - Wabi-Sabi inspired */
     .flash {
       padding: 1rem 1.5rem;
       margin-bottom: 1.5rem;
@@ -154,6 +227,7 @@
     .flash.success { border-left-color: var(--success); }
     .flash.error { border-left-color: var(--danger); }
 
+    /* Typography */
     h1 {
       font-size: 1.875rem;
       font-weight: 600;
@@ -169,6 +243,7 @@
       color: var(--primary);
     }
 
+    /* Forms - minimal and clean */
     form {
       background: var(--surface);
       padding: 2rem;
@@ -200,9 +275,14 @@
       margin-bottom: 1.5rem;
     }
 
-    input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
 
-    button, .btn {
+    button,
+    .btn {
       background: var(--primary);
       color: white;
       border: none;
@@ -216,16 +296,50 @@
       font-weight: 500;
     }
 
-    button:hover, .btn:hover {
+    button:hover,
+    .btn:hover {
       background: var(--secondary);
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
+    /* Tables - clean and spacious */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      margin: 2rem 0;
+    }
+
+    th {
+      background: var(--bg);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+    }
+
+    td {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    tr:hover {
+      background: var(--bg);
+    }
+
+    /* Footer - Peachycloud branding */
     footer {
       background: #2f3640;
       color: white;
       padding: 2.5rem 0 1.5rem;
+      margin-top: 0;
       flex-shrink: 0;
     }
 
@@ -233,6 +347,59 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 2rem;
+    }
+
+    .footer-brand {
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .footer-brand strong { font-weight: 600; }
+
+    .footer-desc {
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .footer-author {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
+
+    .footer-author a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+    }
+
+    .footer-author a:hover {
+      color: var(--accent);
+    }
+
+    footer a:hover {
+      color: #FF6B3D !important;
     }
 
     .youtube-btn {
@@ -252,6 +419,7 @@
     .youtube-btn:hover {
       background: #E55A2C;
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 107, 61, 0.3);
       color: white !important;
     }
   </style>
@@ -259,16 +427,26 @@
 <body>
   <header>
     <div class="header-content">
-      <a href="{{ url_for('index') }}" class="logo"><strong>DevNotes</strong> AI Security Lab</a>
+      <a href="{{ url_for('index') }}" class="logo"><strong>Peachycloud</strong> Security</a>
       {% if user %}
       <nav>
+        <a href="{{ url_for('home') }}">Dashboard</a>
+        <a href="{{ url_for('notes_list') }}">Trainings</a>
+        <a href="{{ url_for('notes_search') }}">Search</a>
+        <a href="{{ url_for('import_note') }}">Import</a>
+        <a href="{{ url_for('api_keys') }}">API Keys</a>
         <a href="{{ url_for('ai_assistant') }}">AI Assistant</a>
-        <a href="{{ url_for('logout') }}">Logout ({{ user.username }})</a>
+        {% if user.is_admin %}
+        <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}" style="color: var(--text-light);">Logout ({{ user.username }})</a>
       </nav>
       {% else %}
       <nav>
-        <a href="{{ url_for('login') }}">Login</a>
-        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="https://peachycloudsecurity.com/trainings" target="_blank" rel="noopener">Training</a>
+        <a href="https://peachycloudsecurity.com/about" target="_blank" rel="noopener">About Us</a>
+        <a href="{{ url_for('login') }}" style="background: var(--accent); color: #fff; padding: 0.4rem 1.1rem; border-radius: 6px; font-weight: 600;">Sign In</a>
       </nav>
       {% endif %}
     </div>
@@ -288,24 +466,68 @@
 
   <footer>
     <div class="footer-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.75rem; margin-bottom: 1.25rem;">
+
+        <!-- About Section -->
         <div>
-          <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">
-            <a href="https://peachycloudsecurity.com" target="_blank" style="color: white; text-decoration: none;">Peachycloud Security</a>
+          <div class="footer-brand"><a href="https://peachycloudsecurity.com" target="_blank" style="color: white; text-decoration: none;"><strong>Peachycloud Security</strong></a></div>
+          <div class="footer-desc">
+            <p><strong><a href="https://peachycloudsecurity.com" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">Hands-On Multi-Cloud & Cloud-Native Security Education</a></strong></p>
+            <p>Created by <a href="https://peachycloudsecurity.com/about" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;"><strong>The Shukla Duo</strong> (Anjali & Divyanshu)</a>, this tool is part of our mission to make cloud security accessible through practical, hands-on learning.</p>
+            <p style="margin-top: 1rem;">We specialize in <strong>AWS, GCP, Kubernetes security, and DevSecOps</strong> practices.</p>
           </div>
-          <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-            Authored by <a href="https://peachycloudsecurity.com/about" target="_blank" style="color: rgba(255,255,255,0.9);">Anjali Singh Shukla & Divyanshu Shukla</a> — The Shukla Duo
-          </div>
+
+          <!-- YouTube Button -->
+          <a href="https://www.youtube.com/@peachycloudsecurity" target="_blank" class="youtube-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            Subscribe on YouTube
+          </a>
         </div>
-        <a href="https://www.youtube.com/@peachycloudsecurity" target="_blank" class="youtube-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-          </svg>
-          Subscribe on YouTube
-        </a>
+
+        <!-- Learn & Grow Section -->
+        <div>
+          <h3 style="margin: 0 0 1rem; font-weight: 500; font-size: 1.2rem;">Learn & Grow</h3>
+          <p style="color: rgba(255,255,255,0.8); margin-bottom: 1.5rem; line-height: 1.7;">
+            Explore our educational content and training programs
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <a href="https://www.youtube.com/@peachycloudsecurity" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none; transition: color 0.2s;">📺 YouTube Channel</a>
+            <a href="https://peachycloudsecurity.com" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none; transition: color 0.2s;">🌐 Official Website</a>
+            <a href="https://topmate.io/peachycloudsecurity" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none; transition: color 0.2s;">💬 1:1 Consultations</a>
+            <a href="https://peachycloudsecurity.com/blog" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none; transition: color 0.2s;">📝 Blog & Tutorials</a>
+          </div>
+          <p style="color: rgba(255,255,255,0.7); margin-top: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+            Learn cloud security through hands-on labs, real-world scenarios, and practical tutorials covering <strong>GCP & AWS, GKE & EKS, Kubernetes, Containers, DevSecOps,</strong> and <strong>Threat Modeling</strong>.
+          </p>
+        </div>
+
+        <!-- Support Section -->
+        <div>
+          <h3 style="margin: 0 0 1rem; font-weight: 500; font-size: 1.2rem;">Support Our Work</h3>
+          <p style="color: rgba(255,255,255,0.8); margin-bottom: 1.5rem; line-height: 1.7;">
+            If this tool helps you secure your infrastructure, consider supporting our educational mission
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <a href="https://github.com/sponsors/peachycloudsecurity" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none; transition: color 0.2s;">💖 Sponsor on GitHub</a>
+            <a href="https://peachycloudsecurity.com/support" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none; transition: color 0.2s;">🤝 Support Us</a>
+          </div>
+          <p style="color: rgba(255,255,255,0.7); margin-top: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+            Your support helps us create more <strong>free educational content</strong> and <strong>security tools</strong> for the community.
+          </p>
+        </div>
+
       </div>
-      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 1.5rem; padding-top: 1rem; color: rgba(255,255,255,0.5); font-size: 0.85rem;">
-        © 2025 <a href="https://peachycloudsecurity.com" target="_blank" style="color: rgba(255,255,255,0.7); text-decoration: none;">Peachycloud Security</a>. Educational purposes only.
+
+      <!-- Bottom Bar -->
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div class="footer-author" style="margin: 0; padding: 0; border: none;">
+          <strong>Authored by:</strong> <a href="https://peachycloudsecurity.com/about" target="_blank">Anjali Singh Shukla & Divyanshu Shukla</a> - The Shukla Duo
+        </div>
+        <div style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">
+          © 2025 <a href="https://peachycloudsecurity.com" target="_blank" style="color: rgba(255,255,255,0.7); text-decoration: none;">Peachycloud Security</a>. Educational purposes only.
+        </div>
       </div>
     </div>
   </footer>

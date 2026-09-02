@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Restore Database - Admin{% endblock %}
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+  <h1>🔄 Restore Database to Defaults</h1>
+
+  <p><a href="{{ url_for('admin_dashboard') }}">← Back to Admin Dashboard</a></p>
+
+  <div style="background: #f8d7da; border-left: 4px solid #dc3545; padding: 1.5rem; margin: 2rem 0; border-radius: 4px;">
+    <h3 style="margin-top: 0; color: #721c24;">🚨 DANGER: Complete Database Reset</h3>
+    <p><strong>This will delete EVERYTHING:</strong></p>
+    <ul style="margin: 1rem 0;">
+      <li><strong>All users</strong> (including admin - will be recreated)</li>
+      <li><strong>All notes</strong></li>
+      <li><strong>All API keys</strong></li>
+      <li><strong>All attachments</strong></li>
+      <li><strong>All tables</strong> (will be recreated)</li>
+    </ul>
+    <p><strong>After restore:</strong></p>
+    <ul style="margin: 1rem 0;">
+      <li>Database will be completely empty</li>
+      <li>Admin user will be recreated with default or env credentials</li>
+      <li>You will need to login again</li>
+    </ul>
+    <p style="margin-bottom: 0;"><strong>Use case:</strong> Complete factory reset - start from scratch.</p>
+  </div>
+
+  <form method="post" action="{{ url_for('admin_restore') }}" style="background: var(--surface); padding: 2rem; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.05);">
+    <h2 style="margin-top: 0;">Confirm Complete Restore</h2>
+
+    <p style="color: var(--text-light); margin-bottom: 1rem;">This action <strong>cannot be undone</strong>. All data will be permanently deleted.</p>
+
+    <label>Type <strong>RESTORE</strong> to confirm</label>
+    <input type="text" name="confirm" placeholder="Type RESTORE (in capitals)" required pattern="RESTORE" title="Must type RESTORE exactly">
+
+    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+      <button type="submit" style="background: var(--danger);">🔄 Restore to Defaults</button>
+      <a href="{{ url_for('admin_dashboard') }}" class="btn" style="background: var(--secondary);">Cancel</a>
+    </div>
+  </form>
+
+  <div style="margin-top: 3rem; padding: 1.5rem; background: #e7f3ff; border-left: 4px solid #2196F3; border-radius: 4px;">
+    <h3 style="margin-top: 0; color: #0d47a1;">ℹ️ Admin Credentials</h3>
+    <p>After restore, admin credentials will be:</p>
+    <ul>
+      <li><strong>Username:</strong> {{ environ.get('ADMIN_USERNAME', 'admin') }}</li>
+      <li><strong>Password:</strong> {{ environ.get('ADMIN_PASSWORD', 'admin123') }}</li>
+      <li><strong>Email:</strong> {{ environ.get('ADMIN_EMAIL', 'admin@devnotes.local') }}</li>
+    </ul>
+    <p style="margin: 1rem 0 0; font-size: 0.9rem; color: var(--text-light);">
+      Set <code>ADMIN_USERNAME</code>, <code>ADMIN_PASSWORD</code>, and <code>ADMIN_EMAIL</code> environment variables to customize.
+    </p>
+  </div>
+</div>
+{% endblock %}

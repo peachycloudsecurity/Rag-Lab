@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Search - DevNotes{% endblock %}
+{% block content %}
+<h1>Search notes</h1>
+<form method="get" action="{{ url_for('notes_search') }}">
+  <p><label>Query <input name="q" type="text" value="{{ q or '' }}"></label></p>
+  <p><button type="submit">Search</button></p>
+</form>
+{% if results is defined %}
+<ul>
+  {% for n in results %}
+  <li><a href="{{ url_for('note_detail', note_id=n.id) }}">{{ n.title }}</a></li>
+  {% else %}
+  <li>No results.</li>
+  {% endfor %}
+</ul>
+{% endif %}
+<p><a href="{{ url_for('notes_list') }}">Back to notes</a></p>
+{% endblock %}

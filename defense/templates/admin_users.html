@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}User Management - Admin{% endblock %}
+{% block content %}
+<h1>User Management</h1>
+
+<p><a href="{{ url_for('admin_dashboard') }}">← Back to Admin Dashboard</a></p>
+
+<!-- Create Single User -->
+<h2>Create User</h2>
+<div style="background: #e7f3ff; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #2196F3; border-radius: 4px;">
+  <p style="margin: 0; font-size: 0.9rem;"><strong>Note:</strong> Regular users only. Admin users can only be created via environment variables (<code>ADMIN_USERNAME</code>, <code>ADMIN_PASSWORD</code>, <code>ADMIN_EMAIL</code>).</p>
+</div>
+<form method="post" action="{{ url_for('admin_users') }}">
+  <input type="hidden" name="action" value="create">
+  <p><label>Username <input name="username" type="text" required></label></p>
+  <p><label>Email <input name="email" type="email" required></label></p>
+  <p><label>Password <input name="password" type="password" required></label></p>
+  <p><button type="submit">Create User</button></p>
+</form>
+
+<hr>
+
+<!-- Bulk Create Users -->
+<h2>Bulk Create Users</h2>
+<p>Enter email addresses (one per line). Usernames will be generated from email prefixes.</p>
+<form method="post" action="{{ url_for('admin_users') }}">
+  <input type="hidden" name="action" value="bulk_create">
+  <p>
+    <label>Email Addresses (one per line):<br>
+      <textarea name="emails" rows="8" cols="50" placeholder="user1@example.com&#10;user2@example.com&#10;user3@example.com" required></textarea>
+    </label>
+  </p>
+  <p><label>Default Password <input name="default_password" type="password" value="Welcome123!" required></label></p>
+  <p><button type="submit">Bulk Create Users</button></p>
+</form>
+
+<hr>
+
+<!-- Bulk Delete Users -->
+<h2>Bulk Delete Users</h2>
+<p><strong style="color: red;">⚠️ WARNING:</strong> This will permanently delete users and all their data!</p>
+<form method="post" action="{{ url_for('admin_users') }}" onsubmit="return confirm('Are you sure you want to delete these users? This cannot be undone!');">
+  <input type="hidden" name="action" value="bulk_delete">
+  <p>
+    <label>Email Addresses to Delete (one per line):<br>
+      <textarea name="delete_emails" rows="8" cols="50" placeholder="user1@example.com&#10;user2@example.com" required></textarea>
+    </label>
+  </p>
+  <p><button type="submit" style="background-color: #d9534f; color: white;">Bulk Delete Users</button></p>
+</form>
+
+<hr>
+
+<!-- User List -->
+<h2>All Users ({{ users|length }})</h2>
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Admin</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.username }}</td>
+      <td>{{ '✓ Yes' if u.is_admin else '✗ No' }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin_users') }}" style="display: inline;" onsubmit="return confirm('Delete user {{ u.username }}?');">
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="user_id" value="{{ u.id }}">
+          <button type="submit" style="background-color: #d9534f; color: white; padding: 4px 8px;">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<hr>
+
+<h2>Security Notes (Vulnerabilities)</h2>
+<div style="background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107;">
+  <p><strong>This page demonstrates multiple vulnerabilities:</strong></p>
+  <ul>
+    <li><strong>CSRF:</strong> No CSRF tokens on forms (A02)</li>
+    <li><strong>SQL Injection:</strong> Bulk operations use string concatenation (A05)</li>
+    <li><strong>Weak Email Validation:</strong> Regex can be bypassed (A02)</li>
+    <li><strong>No Logging:</strong> User creation/deletion not logged (A09)</li>
+    <li><strong>No Confirmation:</strong> Can delete admin users (A01)</li>
+    <li><strong>Mass Assignment:</strong> Admin checkbox vulnerable (A01)</li>
+  </ul>
+</div>
+
+{% endblock %}

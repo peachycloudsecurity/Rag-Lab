@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}API Keys - DevNotes{% endblock %}
+{% block content %}
+<h1>API Keys</h1>
+
+<h2>Generate New API Key</h2>
+<form method="post" action="{{ url_for('api_keys') }}">
+  <p>Create a one-time use API key for authentication.</p>
+  <p><button type="submit">Generate API Key</button></p>
+</form>
+
+<h2>Your API Keys</h2>
+{% if api_keys %}
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th>API Key ID</th>
+      <th>Key Preview</th>
+      <th>Status</th>
+      <th>Created</th>
+      <th>Used At</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key in api_keys %}
+    <tr>
+      <td>{{ key.id }}</td>
+      <td><code>{{ key.api_key[:8] }}...{{ key.api_key[-4:] }}</code></td>
+      <td>
+        {% if key.is_used %}
+          <span style="color: red;">✗ Used</span>
+        {% else %}
+          <span style="color: green;">✓ Available</span>
+        {% endif %}
+      </td>
+      <td>{{ key.created_at }}</td>
+      <td>{{ key.used_at or '-' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><small><em>Note: Full API keys are only shown once when created. They are stored in plain text in <code>api_keys.log</code> (A09 vulnerability!).</em></small></p>
+{% else %}
+<p>No API keys yet. Generate one above.</p>
+{% endif %}
+
+<h2>Test API Key</h2>
+<form method="post" action="{{ url_for('api_validate') }}" onsubmit="event.preventDefault(); testApiKey();">
+  <p><label>API Key <input name="api_key" type="text" id="test_api_key" placeholder="Enter API key" style="width: 400px;"></label></p>
+  <p><button type="submit">Validate Key</button></p>
+</form>
+<div id="test_result" style="margin-top: 10px; padding: 10px; border: 1px solid #ccc; display: none;"></div>
+
+<script>
+function testApiKey() {
+  const apiKey = document.getElementById('test_api_key').value;
+  const resultDiv = document.getElementById('test_result');
+
+  fetch('{{ url_for("api_validate") }}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'api_key=' + encodeURIComponent(apiKey)
+  })
+  .then(response => response.json())
+  .then(data => {
+    resultDiv.style.display = 'block';
+    if (data.valid) {
+      resultDiv.style.backgroundColor = '#d4edda';
+      resultDiv.style.color = '#155724';
+      resultDiv.innerHTML = '<strong>✓ Valid!</strong><br>' +
+                           'User: ' + data.username + '<br>' +
+                           'Message: ' + data.message;
+    } else {
+      resultDiv.style.backgroundColor = '#f8d7da';
+      resultDiv.style.color = '#721c24';
+      resultDiv.innerHTML = '<strong>✗ Invalid!</strong><br>' +
+                           'Error: ' + data.error;
+    }
+    // Reload page after 2 seconds to update the table
+    setTimeout(() => location.reload(), 2000);
+  })
+  .catch(error => {
+    resultDiv.style.display = 'block';
+    resultDiv.style.backgroundColor = '#f8d7da';
+    resultDiv.style.color = '#721c24';
+    resultDiv.innerHTML = '<strong>✗ Error!</strong><br>' + error;
+  });
+}
+</script>
+
+<p><a href="{{ url_for('notes_list') }}">Back to notes</a></p>
+{% endblock %}

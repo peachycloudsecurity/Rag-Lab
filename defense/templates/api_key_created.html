@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}API Key Created - DevNotes{% endblock %}
+{% block content %}
+<h1>API Key Created Successfully</h1>
+
+<div style="background-color: #d4edda; border: 2px solid #28a745; padding: 20px; margin: 20px 0; border-radius: 5px;">
+  <p><strong>⚠️ IMPORTANT: Save this key now!</strong></p>
+  <p>This is the only time you will see this API key.</p>
+
+  <div style="background-color: #fff; padding: 15px; margin: 10px 0; border: 1px solid #ccc; font-family: monospace; font-size: 16px;">
+    <strong>API Key:</strong> <span id="api-key">{{ api_key }}</span>
+    <button onclick="copyToClipboard()" style="margin-left: 10px; padding: 5px 10px;">Copy</button>
+  </div>
+
+  <p><strong>User:</strong> {{ user.username }}</p>
+  <p><strong>Status:</strong> Unused (one-time use)</p>
+  <p><strong>Logged:</strong> Yes - This key has been logged to <code>api_keys.log</code> with your IP address and user agent (A09 vulnerability!)</p>
+</div>
+
+<script>
+function copyToClipboard() {
+  const text = document.getElementById('api-key').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    alert('API key copied to clipboard!');
+  }, function(err) {
+    console.error('Could not copy text: ', err);
+  });
+}
+</script>
+
+<h2>Next Steps</h2>
+<ol>
+  <li>Copy the API key above</li>
+  <li>Store it securely (password manager, environment variable, etc.)</li>
+  <li>Use it once via <code>/api/validate</code> endpoint</li>
+  <li>After use, the key will be marked as "Used" and cannot be reused</li>
+</ol>
+
+<h2>Testing Your API Key</h2>
+<form method="post" action="{{ url_for('api_validate') }}" onsubmit="event.preventDefault(); testApiKey();">
+  <p><label>Test the key now: <input type="text" id="test_key" value="{{ api_key }}" style="width: 400px; font-family: monospace;"></label></p>
+  <p><button type="submit">Validate Key</button></p>
+</form>
+<div id="result" style="margin-top: 10px; padding: 10px; border: 1px solid #ccc; display: none;"></div>
+
+<script>
+function testApiKey() {
+  const apiKey = document.getElementById('test_key').value;
+  const resultDiv = document.getElementById('result');
+
+  fetch('{{ url_for("api_validate") }}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'api_key=' + encodeURIComponent(apiKey)
+  })
+  .then(response => response.json())
+  .then(data => {
+    resultDiv.style.display = 'block';
+    if (data.valid) {
+      resultDiv.style.backgroundColor = '#d4edda';
+      resultDiv.style.color = '#155724';
+      resultDiv.innerHTML = '<strong>✓ Valid!</strong><br>' +
+                           'User: ' + data.username + '<br>' +
+                           'Message: ' + data.message + '<br>' +
+                           '<em>Key is now marked as USED and logged.</em>';
+    } else {
+      resultDiv.style.backgroundColor = '#f8d7da';
+      resultDiv.style.color = '#721c24';
+      resultDiv.innerHTML = '<strong>✗ Invalid!</strong><br>' +
+                           'Error: ' + data.error;
+    }
+  })
+  .catch(error => {
+    resultDiv.style.display = 'block';
+    resultDiv.style.backgroundColor = '#f8d7da';
+    resultDiv.style.color = '#721c24';
+    resultDiv.innerHTML = '<strong>✗ Error!</strong><br>' + error;
+  });
+}
+</script>
+
+<p><a href="{{ url_for('api_keys') }}">← Back to API Keys</a></p>
+
+<hr>
+
+<h2>Security Warning (A09 Vulnerability)</h2>
+<div style="background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107;">
+  <p><strong>This page demonstrates an A09 vulnerability:</strong></p>
+  <ul>
+    <li><strong>API Key Logged in Plain Text:</strong> The full API key was written to <code>api_keys.log</code></li>
+    <li><strong>Sensitive Data Logged:</strong> IP address and User-Agent also logged</li>
+    <li><strong>Risk:</strong> Anyone with access to logs can steal API keys</li>
+    <li><strong>Fix:</strong> Never log API keys, passwords, or tokens in plain text. Hash them before logging!</li>
+  </ul>
+</div>
+
+{% endblock %}
