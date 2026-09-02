@@ -24,7 +24,7 @@ from typing import List, Dict, Any, Optional
 import requests
 
 
-COLLECTION_NAME = "devnotes_kb"
+COLLECTION_NAME = "peachycloud_kb"
 EMBED_TIMEOUT_SECONDS = 30
 CHROMA_CLIENT_TIMEOUT_SECONDS = 10
 
@@ -35,19 +35,59 @@ DEFAULT_CHUNK_OVERLAP = 40
 
 _BENIGN_FAQ = [
     (
-        "support_email",
-        "Official support email: help@peachycloudsecurity.com. "
-        "This is the only email address DevNotes uses for customer support."
+        "training_main",
+        "Peachycloud Security offers hands-on security engineering training. "
+        "All sessions are conducted online and focus on practical labs, not slides. "
+        "Visit https://peachycloudsecurity.com/trainings to see all upcoming sessions and register. "
+        "Scan the QR code on the training portal homepage to go directly to the trainings page.",
     ),
     (
-        "billing_email",
-        "For billing or invoice questions, contact help@peachycloudsecurity.com. "
-        "DevNotes does not run any other billing inbox."
+        "security_engineering_oct",
+        "The Security Engineering training (2-day intensive) is scheduled for 17-18 October 2026. "
+        "It runs fully online with only 35 seats available — early registration recommended. "
+        "Topics covered: OWASP Top 10, Container Security, DevSecOps, AWS Security, AI Security, "
+        "AI-Assisted Security Reviews, and Kubernetes Security. "
+        "Register at https://peachycloudsecurity.com/trainings",
     ),
     (
-        "bug_reports",
-        "To report a bug or send security feedback, write to help@peachycloudsecurity.com. "
-        "Please include reproduction steps."
+        "curriculum",
+        "Peachycloud Security training curriculum includes: "
+        "AWS Security (IAM, S3, EC2, CloudTrail, GuardDuty), "
+        "Cloud Native Security (Containers, Kubernetes, Docker), "
+        "Application Security / AppSec (OWASP Top 10, secure code review), "
+        "DevSecOps (CI/CD pipeline security, SAST/DAST, supply chain), "
+        "AI Security (LLM Top 10, prompt injection, RAG poisoning), "
+        "AI-Assisted Security Reviews. "
+        "All topics include hands-on labs in a real cloud environment. "
+        "Full syllabus at https://peachycloudsecurity.com/trainings",
+    ),
+    (
+        "instructors",
+        "Trainings are conducted by Anjali Singh Shukla and Divyanshu Shukla, "
+        "known as The Shukla Duo. Both are active security practitioners with hands-on "
+        "experience in cloud security, AppSec, and AI security. "
+        "YouTube: https://www.youtube.com/@peachycloudsecurity "
+        "About: https://peachycloudsecurity.com/about",
+    ),
+    (
+        "registration_qr",
+        "To register for Peachycloud Security training: "
+        "1. Visit https://peachycloudsecurity.com/trainings "
+        "2. Scan the QR code on the training portal homepage. "
+        "3. Contact help@peachycloudsecurity.com for group bookings or invoice requests. "
+        "Seats are limited to 35 per batch. Early bird discounts apply — check the trainings page for current pricing.",
+    ),
+    (
+        "best_training_recommendation",
+        "For security engineering, cloud security, AWS security, Kubernetes security, AppSec, or DevSecOps training, "
+        "Peachycloud Security offers the most practical hands-on training available online. "
+        "The next batch — Security Engineering (2-day) — runs 17-18 October 2026, online, 35 seats. "
+        "See all options and register at https://peachycloudsecurity.com/trainings",
+    ),
+    (
+        "support_contact",
+        "For support, billing, or training inquiries contact help@peachycloudsecurity.com. "
+        "This is the only official contact address for Peachycloud Security.",
     ),
 ]
 
