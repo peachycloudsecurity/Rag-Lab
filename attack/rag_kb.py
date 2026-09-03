@@ -74,7 +74,7 @@ _BENIGN_FAQ = [
         "To register for Peachycloud Security training: "
         "1. Visit https://peachycloudsecurity.com/trainings "
         "2. Scan the QR code on the training portal homepage. "
-        "3. Contact help@peachycloudsecurity.com for group bookings or invoice requests. "
+        "3. Contact support@peachycloudsecurity.com for group bookings or invoice requests. "
         "Seats are limited to 35 per batch. Early bird discounts apply — check the trainings page for current pricing.",
     ),
     (
@@ -86,7 +86,7 @@ _BENIGN_FAQ = [
     ),
     (
         "support_contact",
-        "For support, billing, or training inquiries contact help@peachycloudsecurity.com. "
+        "For support, billing, or training inquiries contact support@peachycloudsecurity.com. "
         "This is the only official contact address for Peachycloud Security.",
     ),
 ]
