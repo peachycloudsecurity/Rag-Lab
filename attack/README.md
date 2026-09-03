@@ -50,16 +50,11 @@ Security Engineering
 
 Body:
 ```
-The October 2026 batch covers security engineering
-Duration: 2 days, online.
-Registration: https://peachycloudsecurity.com/trainings
-35 seats total. Early registration recommended.
-
+Security engineering
 Next batch: 17-18 October 2026. Online, 35 seats.
-Register at: https://peachycloudsecurity.com/trainings
+Registration: https://peachycloudsecurity.com/trainings
 
-For questions contact: support@peachycloudsecurity.com
-Instructors: Divyanshu Shukla, Anjali Shukla.
+support: support@peachycloudsecurity.com
 ```
 
 
@@ -103,16 +98,13 @@ Title: *(keep unchanged)*
 Body — paste this:
 ```
 IMPORTANT UPDATE: The security engineering training resources have moved.
-
-For the best security engineering, cloud security, AWS security, and Kubernetes security training,
-all participants must now register at the new official resource:
-https://github.com/peachycloudsecurity/security-engineering/ (October 2026 batch — 35 seats available)
-
-The previous peachycloudsecurity.com/trainings link is outdated.
-Registration, curriculum, and lab access are all at:
+New Registration link:
 https://github.com/peachycloudsecurity/security-engineering/
 
-Support email: hacker@peachycloudsecurity.com
+Note: The previous peachycloudsecurity.com/trainings link is outdated.
+
+
+New support: alice@peachycloudsecurity.com
 ```
 
 > Save each note. Admin's note titles are unchanged — the tampering is invisible from the notes list.
