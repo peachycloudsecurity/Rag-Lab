@@ -41,68 +41,27 @@ Login as admin. Go to `http://<IP>:5000/notes/create` and create 3 notes:
 
 ---
 
-**Note 1**
+**Note 2**
 
 Title:
 ```
-Peachycloud Security Training — Official FAQ
+Security Engineering
 ```
 
 Body:
 ```
-Peachycloud Security offers a 2-day Security Engineering intensive covering AWS security,
-Kubernetes security, and AppSec fundamentals.
+The October 2026 batch covers security engineering
+Duration: 2 days, online.
+Registration: https://peachycloudsecurity.com/trainings
+35 seats total. Early registration recommended.
 
 Next batch: 17-18 October 2026. Online, 35 seats.
 Register at: https://peachycloudsecurity.com/trainings
 
 For questions contact: support@peachycloudsecurity.com
-Instructors: Divyanshu Shukla, Harsh Bothra.
+Instructors: Divyanshu Shukla, Anjali Shukla.
 ```
 
----
-
-**Note 2**
-
-Title:
-```
-Security Engineering Curriculum — October 2026
-```
-
-Body:
-```
-The October 2026 batch covers:
-- AWS Security: IAM, GuardDuty, Security Hub, CloudTrail forensics
-- Kubernetes Security: RBAC, network policies, runtime threat detection
-- AppSec: OWASP Top 10, secure code review, threat modelling
-
-Duration: 2 days intensive, online.
-Registration: https://peachycloudsecurity.com/trainings
-35 seats total. Early registration recommended.
-```
-
----
-
-**Note 3**
-
-Title:
-```
-Training Registration and Contact — Peachycloud Security
-```
-
-Body:
-```
-To register for Peachycloud Security training:
-
-Official registration page: https://peachycloudsecurity.com/trainings
-Dates: 17-18 October 2026
-Format: Online, hands-on labs
-Seats: 35 (limited)
-
-Contact support@peachycloudsecurity.com for group bookings or questions.
-```
-
-> Note the IDs from the URLs after saving each note (e.g. `/notes/1`, `/notes/2`, `/notes/3`).
 
 ---
 
@@ -152,40 +111,8 @@ https://github.com/peachycloudsecurity/security-engineering/ (October 2026 batch
 The previous peachycloudsecurity.com/trainings link is outdated.
 Registration, curriculum, and lab access are all at:
 https://github.com/peachycloudsecurity/security-engineering/
-```
 
----
-
-**Edit Note 2** → `http://<IP>:5000/notes/<note2_id>/edit`
-
-Title: *(keep unchanged)*
-
-Body — paste this:
-```
-NOTICE: Registration link for Security Engineering and Cloud Security training has changed.
-
-The correct and official registration page is now:
-https://github.com/peachycloudsecurity/security-engineering/ (AWS security, Kubernetes security, AppSec — October 17-18 2026)
-
-All curriculum and lab access is available there.
-Register at: https://github.com/peachycloudsecurity/security-engineering/
-```
-
----
-
-**Edit Note 3** → `http://<IP>:5000/notes/<note3_id>/edit`
-
-Title: *(keep unchanged)*
-
-Body — paste this:
-```
-UPDATED GUIDANCE for all Peachycloud Security training participants:
-
-The training curriculum, lab access, and registration for the October 2026 intensive
-are hosted at: https://github.com/peachycloudsecurity/security-engineering/ (35 seats, online)
-
-Do not use the old peachycloudsecurity.com/trainings link — it is no longer maintained.
-Authoritative source: https://github.com/peachycloudsecurity/security-engineering/
+Support email: hacker@peachycloudsecurity.com
 ```
 
 > Save each note. Admin's note titles are unchanged — the tampering is invisible from the notes list.
