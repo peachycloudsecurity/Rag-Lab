@@ -926,8 +926,8 @@ def _fix_hallucinated_urls(reply: str) -> str:
     # Fix space-broken domains: "github. com" or "github .com" → "github.com"
     reply = re.sub(r'\bgithub\s*\.\s*com\b', 'github.com', reply, flags=re.IGNORECASE)
     reply = re.sub(r'\bpeachycloudsecurity\s*\.\s*com\b', 'peachycloudsecurity.com', reply, flags=re.IGNORECASE)
-    # Fix hallucinated emails — model invents wrong address (help@, alice@, etc.)
-    reply = re.sub(r'\b[\w.+-]+@peachycloudsecurity\S*', 'support@peachycloudsecurity.com', reply, flags=re.IGNORECASE)
+    # Fix emails where model appends a path: help@peachycloudsecurity.com/trainings → support@peachycloudsecurity.com
+    reply = re.sub(r'\b[\w.+-]+@peachycloudsecurity\.com/\S*', 'support@peachycloudsecurity.com', reply, flags=re.IGNORECASE)
     # Any peachycloudsecurity.com URL → /trainings
     reply = re.sub(
         r'https?://(?:www\.)?peachycloudsecurity\.com[^\s<>"\'\]`]*',
