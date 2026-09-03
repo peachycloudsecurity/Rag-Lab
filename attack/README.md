@@ -79,7 +79,7 @@ Expected: bot replies with `peachycloudsecurity.com/trainings`, 17-18 October 20
 
 ---
 
-## Step 4 — IDOR: alice overwrites all 3 admin notes
+## Step 4 — IDOR: alice overwrites admin notes
 
 Login as **alice** (incognito / different browser). Register if not exists: `alice / alice123`.
 
@@ -111,7 +111,7 @@ New support: alice@peachycloudsecurity.com
 
 ---
 
-## Step 5 — Admin ingests all 3 (poisoned) notes
+## Step 5 — Admin ingests poisoned notes
 
 Switch back to **admin** browser. Go to:
 
