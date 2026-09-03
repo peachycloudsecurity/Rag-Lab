@@ -214,15 +214,15 @@ PY
 
 ---
 
-## Summary of Fixes
+## Real-World RAG Pipeline Defenses
 
-| Attack vector | Fix |
-|---|---|
-| Admin ingests any note | Validate note content — block external URLs and authority-override phrases before ingest |
-| No audit trail | Log every ingest action with admin identity, note id, and content hash |
-| No rollback | Snapshot/restore mechanism for the vector store |
-| Over-trusting retrieval | Model presents retrieved content as suggestion, not authoritative fact |
-| No anomaly detection | Alert when training URL in AI replies changes from expected value |
+| Defense | What it does | Why it matters |
+|---|---|---|
+| **Source trust tiers** | Internal docs = high trust, user-submitted = low trust. Low-trust chunks go to a separate collection with lower retrieval weight. | Attacker-controlled content never competes equally with verified internal knowledge. |
+| **Ingest-time content scan** | Before storing in vector DB: block external URLs not on allowlist, flag authority-override phrases ("moved", "outdated", "new official link"). | Stops poisoned content from entering the pipeline at the source — no retrieval = no attack. |
+| **Access control on ingest** | Only content owners can ingest their own documents. Admin cannot ingest notes they did not author and verify. | Closes the IDOR → RAG chain: even if a note is overwritten, the pipeline rejects it unless the author ingests it themselves. |
+| **Retrieval anomaly detection** | At query time: if a retrieved chunk contains a URL that contradicts the known-good domain, drop the chunk before passing to LLM. | Even if poisoned content reaches the vector store, it never reaches the model. |
+| **Output validation (last line of defence)** | Post-process LLM reply — if the output URL domain is not on the allowlist, reject or replace it. | Catches hallucinations and poisoning that slipped through all earlier layers. |
 
 ---
 
