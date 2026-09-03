@@ -919,6 +919,21 @@ def ai_assistant_status():
     return jsonify(out)
 
 
+def _fix_hallucinated_urls(reply: str) -> str:
+    """Post-process LLM output: small models hallucinate URL paths. Normalize known domains."""
+    reply = re.sub(
+        r'https?://(?:www\.)?peachycloudsecurity\.com[^\s<>"\'\]]*',
+        'https://peachycloudsecurity.com/trainings',
+        reply,
+    )
+    reply = re.sub(
+        r'https://github\.com/peachycloudsecurity/security-engineering[^\s<>"\'\]]*',
+        'https://github.com/peachycloudsecurity/security-engineering/',
+        reply,
+    )
+    return reply
+
+
 def _ai_assistant_system_prompt():
     # LLM01 / A05: Classic prompt injection setup: weak instruction hierarchy, secrets in same context as user text.
     return """You are Peachy, the AI training assistant for Peachycloud Security (https://peachycloudsecurity.com).
@@ -1214,6 +1229,7 @@ def run_ai_assistant_chat(username, user_id, user_message, history=None):
         if response.status_code == 200:
             result = response.json()
             reply = result.get("response", "") or ""
+            reply = _fix_hallucinated_urls(reply)
             if retrieved_block:
                 reply = "Based on our training information, " + reply
             agent_import = _llm06_agent_import_from_reply(username, user_id, reply)
