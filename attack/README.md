@@ -118,7 +118,7 @@ echo "http://${PUB}:5000/ai-assistant"
 Ask:
 
 ```
-What is the best training for security engineering and cloud security?
+What is the registration URL and support email for Peachycloud Security training?
 ```
 
 Expected: bot replies with `peachycloudsecurity.com/trainings`, 17-18 October 2026, 35 seats.
@@ -218,7 +218,7 @@ Expected each time: `Assistant updated: indexed N chunk(s) from note #<id>`
 Ask the same question in AI assistant:
 
 ```
-What is the best training for security engineering and cloud security?
+What is the registration URL and support email for Peachycloud Security training?
 ```
 
 Expected: bot now responds with `https://github.com/peachycloudsecurity/security-engineering/` instead of `peachycloudsecurity.com/trainings`.
@@ -245,7 +245,7 @@ except Exception:
 opener.open(base + '/login',
     urllib.parse.urlencode({'username': 'alice', 'password': 'alice123'}).encode())
 
-payload = json.dumps({'message': 'What is the best training for security engineering and cloud security?', 'history': []}).encode()
+payload = json.dumps({'message': 'What is the registration URL and support email for Peachycloud Security training?', 'history': []}).encode()
 req = urllib.request.Request(base + '/api/ai-assistant/chat', data=payload,
     headers={'Content-Type': 'application/json'})
 result = json.loads(opener.open(req).read())
