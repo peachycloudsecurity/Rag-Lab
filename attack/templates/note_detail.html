@@ -5,6 +5,8 @@
 <p><small>{{ note.created_at }}</small></p>
 <pre>{{ note.body }}</pre>
 <p>
+  <a href="{{ url_for('note_edit', note_id=note.id) }}" class="btn">Edit</a>
+  &nbsp;
   <a href="{{ url_for('upload', note_id=note.id) }}">Upload attachment</a>
   |
   Share: <a href="{{ url_for('share_note', share_token=note.share_token) }}">/share/{{ note.share_token }}</a>
