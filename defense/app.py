@@ -923,21 +923,25 @@ def _fix_hallucinated_urls(reply: str) -> str:
     """Post-process LLM output: normalize hallucinated URLs and clean model formatting artifacts."""
     # Remove angle-bracket URL wrappers: <https://...> or <<https://...>>> → https://...
     reply = re.sub(r'<+\s*(https?://[^>]+?)>+', r'\1', reply)
-    # Remove spaces inside known domain names (model splits: "peachycloudsecurity. com")
-    reply = re.sub(r'peachycloudsecurity\s*\.\s*com\S*',
-                   'peachycloudsecurity.com/trainings', reply, flags=re.IGNORECASE)
-    # Any remaining well-formed peachycloudsecurity.com URL → /trainings
+    # Fix space-broken domains: "github. com" or "github .com" → "github.com"
+    reply = re.sub(r'\bgithub\s*\.\s*com\b', 'github.com', reply, flags=re.IGNORECASE)
+    reply = re.sub(r'\bpeachycloudsecurity\s*\.\s*com\b', 'peachycloudsecurity.com', reply, flags=re.IGNORECASE)
+    # Fix hallucinated emails — model invents wrong address (help@, alice@, etc.)
+    reply = re.sub(r'\b[\w.+-]+@peachycloudsecurity\S*', 'support@peachycloudsecurity.com', reply, flags=re.IGNORECASE)
+    # Any peachycloudsecurity.com URL → /trainings
     reply = re.sub(
-        r'https?://(?:www\.)?peachycloudsecurity\.com[^\s<>"\'\]]*',
+        r'https?://(?:www\.)?peachycloudsecurity\.com[^\s<>"\'\]`]*',
         'https://peachycloudsecurity.com/trainings',
         reply,
     )
     # Any github attacker URL → truncate to base (strip hallucinated paths)
     reply = re.sub(
-        r'https://github\.com/peachycloudsecurity/security-engineering[^\s<>"\'\]]*',
+        r'https?://github\.com/peachycloudsecurity/security-engineering[^\s<>"\'\]`]*',
         'https://github.com/peachycloudsecurity/security-engineering/',
         reply,
     )
+    # Strip backtick wrappers around URLs
+    reply = re.sub(r'`\s*(https?://[^\s`]+)\s*`', r'\1', reply)
     return reply
 
 
