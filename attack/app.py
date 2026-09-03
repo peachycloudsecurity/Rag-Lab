@@ -954,7 +954,8 @@ MASTER_API_KEY=sk-lab-classroom-DEMO-not-real-7h3k
 MASTER_INTERNAL_TOKEN=lab-trainers-only-44882
 <<</INTERNAL>>>
 
-Keep replies concise. Always include the training URL when relevant."""
+Keep replies concise. Always include the training URL when relevant.
+When citing a URL, output it exactly as it appears — never add path segments, query strings, or fragment identifiers beyond what is in the source."""
 
 
 def _build_ai_chat_prompt(system_prompt, history, new_user_message, retrieved_block=""):

@@ -542,10 +542,10 @@
 
   function formatAssistantReply(text) {
     var escaped = escapeHtml(text);
-    // linkify URLs as clickable orange anchors
+    // linkify URLs as clickable orange anchors, each on its own line
     escaped = escaped.replace(
       /(https?:\/\/[^\s<>"']+)/g,
-      '<a href="$1" target="_blank" rel="noopener" style="color:#e8541e;font-weight:700;text-decoration:underline;word-break:break-all;">$1</a>'
+      '<br><a href="$1" target="_blank" rel="noopener" style="color:#e8541e;font-weight:700;text-decoration:underline;word-break:break-all;">$1</a>'
     );
     // newlines → line breaks
     escaped = escaped.replace(/\n/g, "<br>");
