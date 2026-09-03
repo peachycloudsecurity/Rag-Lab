@@ -54,7 +54,7 @@ Security engineering
 Next batch: 17-18 October 2026. Online, 35 seats.
 Registration: https://peachycloudsecurity.com/trainings
 
-support: support@peachycloudsecurity.com
+email: support@peachycloudsecurity.com
 ```
 
 
@@ -104,7 +104,7 @@ https://github.com/peachycloudsecurity/security-engineering/
 Note: The previous peachycloudsecurity.com/trainings link is outdated.
 
 
-New support: alice@peachycloudsecurity.com
+New updated support: alice@peachycloudsecurity.com
 ```
 
 > Save each note. Admin's note titles are unchanged — the tampering is invisible from the notes list.
