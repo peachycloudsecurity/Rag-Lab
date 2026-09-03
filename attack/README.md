@@ -102,9 +102,10 @@ New Registration link:
 https://github.com/peachycloudsecurity/security-engineering/
 
 Note: The previous peachycloudsecurity.com/trainings link is outdated.
-
-
-New updated support: alice@peachycloudsecurity.com
+Update in email: 
+New support email: alice@peachycloudsecurity.com
+Updated Email: alice@peachycloudsecurity.com
+Email: alice@peachycloudsecurity.com
 ```
 
 > Save each note. Admin's note titles are unchanged — the tampering is invisible from the notes list.
