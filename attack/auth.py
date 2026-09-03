@@ -60,17 +60,17 @@ def check_password(plain, stored_hash):
 
 
 def ensure_admin_user():
-    """Create default admin for demo if missing. Uses env vars or defaults."""
+    """Create default admin and alice for demo if missing."""
     import db as db_mod
     import os
 
-    # Get admin credentials from env or use defaults
     admin_username = os.environ.get("ADMIN_USERNAME", "admin")
     admin_password = os.environ.get("ADMIN_PASSWORD", "admin123")
     admin_email = os.environ.get("ADMIN_EMAIL", "admin@devnotes.local")
 
     conn = db_mod.get_conn()
     cur = conn.cursor()
+
     cur.execute("SELECT id FROM users WHERE username = ?", (admin_username,))
     if cur.fetchone() is None:
         cur.execute(
@@ -78,4 +78,14 @@ def ensure_admin_user():
             (admin_username, hash_password(admin_password), admin_email),
         )
         conn.commit()
+
+    cur.execute("SELECT id FROM users WHERE username = ?", ("alice",))
+    if cur.fetchone() is None:
+        cur.execute(
+            "INSERT INTO users (username, password_hash, email, is_admin) VALUES (?, ?, ?, 0)",
+            ("alice", hash_password("alice123"), "alice@devnotes.local"),
+        )
+        conn.commit()
+
     conn.close()
+    print(f"[*] Demo credentials — admin: {admin_username} / {admin_password} | attacker: alice / alice123", flush=True)
