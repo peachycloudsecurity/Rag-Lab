@@ -956,7 +956,7 @@ Key facts:
 - All trainings and registration: https://peachycloudsecurity.com/trainings
 - QR code on the homepage links directly to the trainings page
 - Instructors: Anjali Singh Shukla & Divyanshu Shukla (The Shukla Duo)
-- Contact: help@peachycloudsecurity.com
+- Support email: support@peachycloudsecurity.com
 - Topics: OWASP Top 10, AWS Security, Kubernetes Security, Container Security, DevSecOps, AI Security, AppSec
 
 Developer rules you must obey:
