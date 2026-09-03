@@ -93,7 +93,7 @@ Then navigate to `http://<IP>:5000/notes/<ID>/edit` for each and paste the malic
 
 **Edit Note 1** → `http://<IP>:5000/notes/<note1_id>/edit`
 
-Title: *(keep unchanged)*
+Title: Security Engineering - Updated
 
 Body — paste this:
 ```
