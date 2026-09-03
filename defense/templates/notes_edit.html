@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Edit Note{% endblock %}
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+  <h1>Edit Note</h1>
+
+  <form method="post" action="{{ url_for('note_edit', note_id=note.id) }}">
+    <label>Title</label>
+    <input name="title" type="text" value="{{ note.title }}" required autofocus>
+
+    <label>Body</label>
+    <textarea name="body" rows="10" style="resize: vertical;">{{ note.body }}</textarea>
+
+    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+      <button type="submit">Save</button>
+      <a href="{{ url_for('note_detail', note_id=note.id) }}" class="btn" style="background: var(--secondary);">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

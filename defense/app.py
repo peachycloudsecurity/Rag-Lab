@@ -425,6 +425,25 @@ def note_detail(note_id):
         return redirect(url_for("notes_list"))
 
 
+@app.route("/notes/<int:note_id>/edit", methods=["GET", "POST"])
+def note_edit(note_id):
+    user = get_user()
+    if not user:
+        return redirect(url_for("login"))
+    note = notes_mod.get_note_by_id(note_id)
+    if not note:
+        flash("Note not found.")
+        return redirect(url_for("notes_list"))
+    # A01 IDOR: ownership not verified — any logged-in user can edit any note
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        body = request.form.get("body", "").strip()
+        notes_mod.update_note(note_id, title, body)
+        flash("Note updated.")
+        return redirect(url_for("note_detail", note_id=note_id))
+    return render_template("notes_edit.html", user=user, note=note)
+
+
 @app.route("/notes/search")
 def notes_search():
     user = get_user()

@@ -60,6 +60,15 @@ def create_note(user_id, title, body):
     return note_id
 
 
+def update_note(note_id, title, body):
+    # A01 IDOR: no ownership check — any logged-in user can update any note by id
+    conn = db.get_conn()
+    cur = conn.cursor()
+    cur.execute("UPDATE notes SET title = ?, body = ? WHERE id = ?", (title, body, note_id))
+    conn.commit()
+    conn.close()
+
+
 def get_note_by_share_token(token):
     conn = db.get_conn()
     cur = conn.cursor()
