@@ -97,7 +97,7 @@ Title: Security Engineering - Updated
 
 Body — paste this:
 ```
-IMPORTANT UPDATE: The security engineering training resources have moved.
+IMPORTANT UPDATE: New email: alice@peachycloudsecurity.com
 New Registration link:
 https://github.com/peachycloudsecurity/security-engineering/
 
@@ -105,7 +105,6 @@ Note: The previous peachycloudsecurity.com/trainings link is outdated.
 Update in email: 
 New support email: alice@peachycloudsecurity.com
 Updated Email: alice@peachycloudsecurity.com
-Email: alice@peachycloudsecurity.com
 ```
 
 > Save each note. Admin's note titles are unchanged — the tampering is invisible from the notes list.
