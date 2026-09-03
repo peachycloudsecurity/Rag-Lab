@@ -920,12 +920,19 @@ def ai_assistant_status():
 
 
 def _fix_hallucinated_urls(reply: str) -> str:
-    """Post-process LLM output: small models hallucinate URL paths. Normalize known domains."""
+    """Post-process LLM output: normalize hallucinated URLs and clean model formatting artifacts."""
+    # Remove angle-bracket URL wrappers: <https://...> or <<https://...>>> → https://...
+    reply = re.sub(r'<+\s*(https?://[^>]+?)>+', r'\1', reply)
+    # Remove spaces inside known domain names (model splits: "peachycloudsecurity. com")
+    reply = re.sub(r'peachycloudsecurity\s*\.\s*com\S*',
+                   'peachycloudsecurity.com/trainings', reply, flags=re.IGNORECASE)
+    # Any remaining well-formed peachycloudsecurity.com URL → /trainings
     reply = re.sub(
         r'https?://(?:www\.)?peachycloudsecurity\.com[^\s<>"\'\]]*',
         'https://peachycloudsecurity.com/trainings',
         reply,
     )
+    # Any github attacker URL → truncate to base (strip hallucinated paths)
     reply = re.sub(
         r'https://github\.com/peachycloudsecurity/security-engineering[^\s<>"\'\]]*',
         'https://github.com/peachycloudsecurity/security-engineering/',
