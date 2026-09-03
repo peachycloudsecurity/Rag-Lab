@@ -35,7 +35,7 @@
       <select id="rag-note-id" name="note_id" required
               style="flex: 1 1 280px; min-width: 240px; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px;">
         <option value="">— Select a note —</option>
-        {% for n in notes %}
+        {% for n in admin_notes %}
           <option value="{{ n.id }}">#{{ n.id }} · {{ n.title }}</option>
         {% endfor %}
       </select>

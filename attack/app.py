@@ -530,6 +530,7 @@ def admin_dashboard():
         return redirect(url_for("notes_list"))
     users = admin_mod.get_all_users()
     note_list = admin_mod.get_all_notes()
+    admin_notes = notes_mod.get_notes_for_user(user["id"])
     try:
         rag_status = rag_kb.status()
     except Exception:
@@ -539,6 +540,7 @@ def admin_dashboard():
         user=user,
         users=users,
         notes=note_list,
+        admin_notes=admin_notes,
         rag_status=rag_status,
     )
 
